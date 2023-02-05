@@ -1,3 +1,6 @@
+'use strict'
+import mongoose from 'mongoose'
+
 const applicationSchema = new mongoose.Schema({
     requestDate: {
         type: Date,
@@ -14,7 +17,8 @@ const applicationSchema = new mongoose.Schema({
         type: String
     },
     rejectedReason: {
-        type: String
+        type: String, 
+        default: null
     },
     trip: {
         type: mongoose.Schema.Types.ObjectId,
@@ -27,3 +31,8 @@ const applicationSchema = new mongoose.Schema({
         required: 'Application explorer required'
     },
 }, { strict: false })
+
+const model = mongoose.model('Application', applicationSchema)
+
+export const schema = model.schema
+export default model
