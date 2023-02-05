@@ -1,0 +1,671 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: ACME-Explorer API REST
+  description: API REST for travel agency
+
+paths:
+  /api/v1/actors:
+    get:
+      description: Returns all actors
+      operationId: getActor
+      responses:
+        200:
+          description: Actor list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/actor"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    post:
+      description: Creates a new actor
+      operationId: addActor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/actor"
+        description: Actor to be created
+        required: true
+      responses:
+        201:
+          description: Actor
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /api/v1/actors/{_id}:
+    get:
+      description: Returns a single actor by its _id
+      operationId: findBy_id
+      parameters:
+        - required: true
+          name: _id
+          description: _id of the actor to fetch
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: Actor found by _id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/actor"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    put:
+      description: Update a actor based on its _id
+      operationId: updateActor
+      parameters:
+        - required: true
+          name: _id
+          description: _id of the actor to update
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/actor"
+        description: Actor to be updated
+        required: true
+      responses:
+        "204":
+          description: Actor updated
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    delete:
+      description: Deletes a single actor based on its _id
+      operationId: deleteActor
+      parameters:
+        - required: true
+          name: _id
+          description: _id of the actor to delete
+          in: path
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Actor deleted
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /api/v1/applications:
+    get:
+      description: Returns all applications
+      operationId: getApplication
+      responses:
+        200:
+          description: Application list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/application"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    post:
+      description: Creates a new application
+      operationId: addApplication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/application"
+        description: Application to be created
+        required: true
+      responses:
+        201:
+          description: Application
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /api/v1/applications/{_id}:
+    get:
+      description: Returns a single application by its _id
+      operationId: findBy_id
+      parameters:
+        - required: true
+          name: _id
+          description: _id of the application to fetch
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: Application found by _id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/application"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    put:
+      description: Update a application based on its _id
+      operationId: updateApplication
+      parameters:
+        - required: true
+          name: _id
+          description: _id of the application to update
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/application"
+        description: Application to be updated
+        required: true
+      responses:
+        "204":
+          description: Application updated
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    delete:
+      description: Deletes a single application based on its _id
+      operationId: deleteApplication
+      parameters:
+        - required: true
+          name: _id
+          description: _id of the application to delete
+          in: path
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Application deleted
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /api/v1/finders:
+    get:
+      description: Returns all finders
+      operationId: getFinder
+      responses:
+        200:
+          description: Finder list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/finder"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    post:
+      description: Creates a new finder
+      operationId: addFinder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/finder"
+        description: Finder to be created
+        required: true
+      responses:
+        201:
+          description: Finder
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /api/v1/finders/{_id}:
+    get:
+      description: Returns a single finder by its _id
+      operationId: findBy_id
+      parameters:
+        - required: true
+          name: _id
+          description: _id of the finder to fetch
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: Finder found by _id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/finder"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    put:
+      description: Update a finder based on its _id
+      operationId: updateFinder
+      parameters:
+        - required: true
+          name: _id
+          description: _id of the finder to update
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/finder"
+        description: Finder to be updated
+        required: true
+      responses:
+        "204":
+          description: Finder updated
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    delete:
+      description: Deletes a single finder based on its _id
+      operationId: deleteFinder
+      parameters:
+        - required: true
+          name: _id
+          description: _id of the finder to delete
+          in: path
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Finder deleted
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /api/v1/trips:
+    get:
+      description: Returns all trips
+      operationId: getTrip
+      responses:
+        200:
+          description: Trip list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/trip"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    post:
+      description: Creates a new trip
+      operationId: addTrip
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/trip"
+        description: Trip to be created
+        required: true
+      responses:
+        201:
+          description: Trip
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /api/v1/trips/{_id}:
+    get:
+      description: Returns a single trip by its _id
+      operationId: findBy_id
+      parameters:
+        - required: true
+          name: _id
+          description: _id of the trip to fetch
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: Trip found by _id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/trip"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    put:
+      description: Update a trip based on its _id
+      operationId: updateTrip
+      parameters:
+        - required: true
+          name: _id
+          description: _id of the trip to update
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/trip"
+        description: Trip to be updated
+        required: true
+      responses:
+        "204":
+          description: Trip updated
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    delete:
+      description: Deletes a single trip based on its _id
+      operationId: deleteTrip
+      parameters:
+        - required: true
+          name: _id
+          description: _id of the trip to delete
+          in: path
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Trip deleted
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /api/v1/configurations:
+    get:
+      description: Returns all configurations
+      operationId: getConfiguration
+      responses:
+        200:
+          description: Configuration list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/configuration"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    post:
+      description: Creates a new configuration
+      operationId: addConfiguration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/configuration"
+        description: Configuration to be created
+        required: true
+      responses:
+        201:
+          description: Configuration
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /api/v1/configurations/{sponsorshipPrice}:
+    get:
+      description: Returns a single configuration by its sponsorshipPrice
+      operationId: findBysponsorshipPrice
+      parameters:
+        - required: true
+          name: sponsorshipPrice
+          description: sponsorshipPrice of the configuration to fetch
+          in: path
+          schema:
+            type: number
+      responses:
+        200:
+          description: Configuration found by sponsorshipPrice
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/configuration"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    put:
+      description: Update a configuration based on its sponsorshipPrice
+      operationId: updateConfiguration
+      parameters:
+        - required: true
+          name: sponsorshipPrice
+          description: sponsorshipPrice of the configuration to update
+          in: path
+          schema:
+            type: number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/configuration"
+        description: Configuration to be updated
+        required: true
+      responses:
+        "204":
+          description: Configuration updated
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+    delete:
+      description: Deletes a single configuration based on its sponsorshipPrice
+      operationId: deleteConfiguration
+      parameters:
+        - required: true
+          name: sponsorshipPrice
+          description: sponsorshipPrice of the configuration to delete
+          in: path
+          schema:
+            type: number
+      responses:
+        "204":
+          description: Configuration deleted
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+components:
+  schemas:
+    actor:
+      type: object
+      required:
+        - _id
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        password:
+          type: string
+        preferredLanguage:
+          type: string
+        role:
+          type: array
+          items: {}
+        banned:
+          type: boolean
+    application:
+      type: object
+      required:
+        - _id
+      properties:
+        _id:
+          type: string
+        requestDate:
+          type: string
+        status:
+          type: string
+        comment:
+          type: string
+        rejectedReason:
+          type: object
+        explorer_id:
+          type: string
+        trip_id:
+          type: string
+    finder:
+      type: object
+      required:
+        - _id
+      properties:
+        _id:
+          type: string
+        explorer_id:
+          type: string
+        date:
+          type: string
+        keyword:
+          type: string
+        minPrice:
+          type: number
+        maxPrice:
+          type: number
+        startDate:
+          type: string
+        endDate:
+          type: string
+    trip:
+      type: object
+      required:
+        - _id
+      properties:
+        _id:
+          type: string
+        ticker:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        requirements:
+          type: array
+          items: {}
+        startDate:
+          type: string
+        endDate:
+          type: string
+        imageCollection:
+          type: array
+          items: {}
+        cancelationReason:
+          type: object
+        status:
+          type: string
+        stages:
+          type: array
+          items: {}
+        sponsorship:
+          type: array
+          items: {}
+        manager_id:
+          type: string
+    configuration:
+      type: object
+      required:
+        - _id
+      properties:
+        _id:
+          type: string
+        sponsorshipPrice:
+          type: number
+        defaultLanguage:
+          type: string
+        cacheLifeTime:
+          type: number
+        paginationSize:
+          type: number
+    error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+      additionalProperties: true
