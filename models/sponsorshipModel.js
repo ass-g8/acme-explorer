@@ -1,3 +1,5 @@
+'use strict'
+import mongoose from 'mongoose'
 
 const sponsorshipSchema = new mongoose.Schema({
     banner: {
@@ -20,14 +22,11 @@ const sponsorshipSchema = new mongoose.Schema({
         enum: ['PENDING', 'ACCEPTED', 'CANCELLED'],
         default: 'PENDING'
     },
-    trip: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Trip',
-        required: 'Sponsorship trip required'
-    },
     sponsor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Actor',
         required: 'Sponsorship sponsor required'
     }
 }, { strict: false })
+
+export const schema = sponsorshipSchema

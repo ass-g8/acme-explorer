@@ -41,3 +41,8 @@ const actorSchema = new mongoose.Schema({
         default: false
     }
 }, { strict: false })
+
+const model = mongoose.model('Actor', actorSchema)
+
+export const schema = model.schema
+export default model
