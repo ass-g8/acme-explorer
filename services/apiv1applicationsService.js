@@ -1,12 +1,20 @@
-export function getApplication(req, res) {
-    res.send({
-        message: 'This is the mockup controller for getApplication'
-    });
+import Application from "../models/applicationModel";
+
+export async function getApplication(req, res) {
+  try {
+    const applications = await Application.find();
+    res.send(applications);
+  } catch (error) {
+    res.status(500).send(err);
+  }
 }
 
-export function addApplication(req, res) {
-    res.send({
-        message: 'This is the mockup controller for addApplication'
-    });
+export async function addApplication(req, res) {
+  const newApplication = new Application(req.body);
+  try {
+    const application = await newApplication.save();
+    res.send(application);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 }
-
