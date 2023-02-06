@@ -1,4 +1,4 @@
-import Application from "../models/applicationModel";
+import Application from "../models/applicationModel.js";
 
 export async function findBy_id(req, res) {
   Application.findById(req.params._id, (err, application) => {

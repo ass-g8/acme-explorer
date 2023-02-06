@@ -219,6 +219,33 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
+  /api/v1/applications/{_id}/change-status:
+    patch:
+      description: Update an application status based on its _id
+      operationId: updateApplicationStatus
+      parameters:
+        - required: true
+          name: _id
+          description: _id of the application to update
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/application"
+        description: Application to be updated
+        required: true
+      responses:
+        "204":
+          description: Application updated
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
   /api/v1/finders:
     get:
       description: Returns all finders

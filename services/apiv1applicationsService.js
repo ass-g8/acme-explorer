@@ -1,4 +1,4 @@
-import Application from "../models/applicationModel";
+import Application from "../models/applicationModel.js";
 
 export async function getApplication(req, res) {
   try {
