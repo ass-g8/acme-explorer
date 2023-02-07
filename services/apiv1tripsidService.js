@@ -5,7 +5,7 @@ export function findBy_id(req, res) {
         if (err) {
             res.send(err)
         } else {
-            res.json(order)
+            res.send(order)
         }
     })
 }
@@ -18,7 +18,7 @@ export async function updateTrip(req, res) {
             { new: true }
         )
         if (trip) {
-            res.json(trip)
+            res.send(trip)
         }
         else {
             res.status(404).send("Trip not found")
