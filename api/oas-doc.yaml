@@ -31,7 +31,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/actor"
+              type: object
+              properties:
+                name:
+                  type: string
+                surname:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+                address:
+                  type: string
+                password:
+                  type: string
+                preferredLanguage:
+                  type: string
+                role:
+                  type: array
+                  items: {}
+                banned:
+                  type: boolean
         description: Actor to be created
         required: true
       responses:
@@ -81,7 +101,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/actor"
+              type: object
+              properties:
+                name:
+                  type: string
+                surname:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+                address:
+                  type: string
+                password:
+                  type: string
+                preferredLanguage:
+                  type: string
+                role:
+                  type: array
+                  items: {}
+                banned:
+                  type: boolean
         description: Actor to be updated
         required: true
       responses:
@@ -595,7 +635,7 @@ components:
       properties:
         _id:
           type: string
-        explorer_id:
+        explorer:
           type: string
         date:
           type: string
