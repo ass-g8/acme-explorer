@@ -4,8 +4,7 @@ import mongoose from 'mongoose'
 const sponsorshipSchema = new mongoose.Schema({
     banner: {
         data: Buffer,
-        contentType: String,
-        required: 'Sponsorship banner required'
+        contentType: String
     },
     landingPage: {
         type: String,
@@ -22,7 +21,7 @@ const sponsorshipSchema = new mongoose.Schema({
         enum: ['PENDING', 'ACCEPTED', 'CANCELLED'],
         default: 'PENDING'
     },
-    sponsor: {
+    sponsor_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Actor',
         required: 'Sponsorship sponsor required'

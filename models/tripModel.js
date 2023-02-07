@@ -11,7 +11,6 @@ const tripSchema = new mongoose.Schema({
     ticker: {
         type: String,
         unique: true,
-        required: 'Trip ticker required',
         validate: {
             validator: function (v) {
                 return /\d{6}-\w{4}/.test(v)
@@ -55,7 +54,7 @@ const tripSchema = new mongoose.Schema({
     },
     stages: [stageSchema],
     sponsorships: [sponsorshipSchema],
-    manager: {
+    manager_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Actor',
         required: 'Trip manager required'
