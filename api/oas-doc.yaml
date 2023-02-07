@@ -245,7 +245,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/finder"
+              type: object
+              properties:
+                explorer:
+                  type: string
+                date:
+                  type: string
+                keyword:
+                  type: string
+                minPrice:
+                  type: number
+                maxPrice:
+                  type: number
+                startDate:
+                  type: string
+                endDate:
+                  type: string
         description: Finder to be created
         required: true
       responses:
@@ -295,7 +310,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/finder"
+              type: object
+              properties:
+                date:
+                  type: string
+                keyword:
+                  type: string
+                minPrice:
+                  type: number
+                maxPrice:
+                  type: number
+                startDate:
+                  type: string
+                endDate:
+                  type: string
         description: Finder to be updated
         required: true
       responses:
@@ -595,7 +623,7 @@ components:
       properties:
         _id:
           type: string
-        explorer_id:
+        explorer:
           type: string
         date:
           type: string
