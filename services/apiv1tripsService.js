@@ -1,12 +1,23 @@
-export function getTrip(req, res) {
-    res.send({
-        message: 'This is the mockup controller for getTrip'
-    });
+import Trip from '../models/tripModel.js';
+
+export async function getTrip(req, res) {
+    try {
+        const trips = await Trip.find({})
+        res.json(trips)
+    }
+    catch (err) {
+        res.status(500).send(err)
+    }
 }
 
-export function addTrip(req, res) {
-    res.send({
-        message: 'This is the mockup controller for addTrip'
-    });
+export async function addTrip(req, res) {
+    const newTrip = new Trip(req.body)
+    try {
+        const trip = await newTrip.save()
+        res.json(trip)
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send(err)
+    }
 }
-

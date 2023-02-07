@@ -635,7 +635,7 @@ components:
           type: array
           items: {}
         cancelationReason:
-          type: object
+          type: string
         status:
           type: string
         stages:
