@@ -247,7 +247,7 @@ paths:
             schema:
               type: object
               properties:
-                explorer:
+                explorer_id:
                   type: string
                 date:
                   type: string
@@ -623,7 +623,7 @@ components:
       properties:
         _id:
           type: string
-        explorer:
+        explorer_id:
           type: string
         date:
           type: string
