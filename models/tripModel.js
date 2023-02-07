@@ -54,7 +54,7 @@ const tripSchema = new mongoose.Schema({
     },
     stages: [stageSchema],
     sponsorships: [sponsorshipSchema],
-    manager: {
+    manager_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Actor',
         required: 'Trip manager required'

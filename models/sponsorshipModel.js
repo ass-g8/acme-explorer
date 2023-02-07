@@ -21,7 +21,7 @@ const sponsorshipSchema = new mongoose.Schema({
         enum: ['PENDING', 'ACCEPTED', 'CANCELLED'],
         default: 'PENDING'
     },
-    sponsor: {
+    sponsor_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Actor',
         required: 'Sponsorship sponsor required'
