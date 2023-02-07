@@ -22,7 +22,7 @@ const finderSchema = new mongoose.Schema({
     date: {
         type: Date,
     },
-    explorer: {
+    explorer_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Actor',
         required: 'Finder explorer required'
