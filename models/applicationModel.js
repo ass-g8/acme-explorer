@@ -1,38 +1,41 @@
-'use strict'
-import mongoose from 'mongoose'
+"use strict";
+import mongoose from "mongoose";
 
-const applicationSchema = new mongoose.Schema({
+const applicationSchema = new mongoose.Schema(
+  {
     requestDate: {
-        type: Date,
-        required: 'Application request date required',
-        default: Date.now
+      type: Date,
+      required: "Application request date required",
+      default: Date.now,
     },
     status: {
-        type: String,
-        required: 'Application status required',
-        enum: ['PENDING', 'DUE', 'ACCEPTED', 'REJECTED', 'CANCELLED'],
-        default: 'PENDING'
+      type: String,
+      required: "Application status required",
+      enum: ["PENDING", "DUE", "ACCEPTED", "REJECTED", "CANCELLED"],
+      default: "PENDING",
     },
     comment: {
-        type: String
+      type: String,
     },
     rejectedReason: {
-        type: String, 
-        default: null
+      type: String,
+      default: null,
     },
-    trip: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Trip',
-        required: 'Application trip required'
+    trip_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Trip",
+      required: "Application trip required",
     },
-    explorer: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Actor',
-        required: 'Application explorer required'
+    explorer_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Actor",
+      required: "Application explorer required",
     },
-}, { strict: false })
+  },
+  { strict: false }
+);
 
-const model = mongoose.model('Application', applicationSchema)
+const model = mongoose.model("Application", applicationSchema);
 
-export const schema = model.schema
-export default model
+export const schema = model.schema;
+export default model;

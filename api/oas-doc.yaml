@@ -610,7 +610,7 @@ components:
         comment:
           type: string
         rejectedReason:
-          type: object
+          type: string
         explorer_id:
           type: string
         trip_id:
