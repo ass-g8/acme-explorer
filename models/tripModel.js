@@ -10,6 +10,13 @@ const idGenerator = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqr
 const tripSchema = new mongoose.Schema({
     ticker: {
         type: String,
+        unique: true,
+        validate: {
+            validator: function (v) {
+                return /\d{6}-\w{4}/.test(v)
+            },
+            message: 'ticker is not valid!, Pattern("YYMMDD-XXXX")'
+        }
     },
     title: {
         type: String,
@@ -49,7 +56,8 @@ const tripSchema = new mongoose.Schema({
     sponsorships: [sponsorshipSchema],
     manager: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Actor'
+        ref: 'Actor',
+        required: 'Trip manager required'
     },
     status: {
         type: String,
@@ -59,16 +67,16 @@ const tripSchema = new mongoose.Schema({
 }, { strict: false })
 
 
-// tripSchema.pre('save', function (callback) {
-//     const newTrip = this
-//     const day = dateFormat(new Date(), 'yymmdd')
+tripSchema.pre('save', function (callback) {
+    const newTrip = this
+    const day = dateFormat(new Date(), 'yymmdd')
 
-//     const generatedTicker = [day, idGenerator()].join('-')
-//     newTrip.ticker = generatedTicker
-//     newTrip.price = newTrip.stages.reduce((acc, stage) => acc + stage.price, 0)
+    const generatedTicker = [day, idGenerator()].join('-')
+    newTrip.ticker = generatedTicker
+    newTrip.price = newTrip.stages.reduce((acc, stage) => acc + stage.price, 0)
 
-//     callback()
-// })
+    callback()
+})
 
 const model = mongoose.model('Trip', tripSchema)
 
