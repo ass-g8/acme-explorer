@@ -27,7 +27,11 @@ export async function updateActor(req, res) {
         }
     }
     catch (err) {
-        res.send(err)
+        if (err.name === 'ValidationError') {
+            res.status(422).send(err)
+        } else {
+            res.status(500).send(err)
+        }
     }
 }
 
