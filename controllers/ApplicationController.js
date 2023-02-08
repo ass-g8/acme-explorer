@@ -1,4 +1,4 @@
-import Application from "../models/applicationModel.js";
+import Application from "../models/ApplicationModel.js";
 
 export async function findBy_id(req, res) {
   Application.findById(req.params._id, (err, application) => {
@@ -41,5 +41,37 @@ export async function deleteApplication(req, res) {
     }
   } catch (err) {
     res.status(500).send(err);
+  }
+}
+
+export async function getApplication(req, res) {
+  try {
+    const applications = await Application.find();
+    res.send(applications);
+  } catch (error) {
+    res.status(500).send(err);
+  }
+}
+
+export async function addApplication(req, res) {
+  const newApplication = new Application(req.body);
+  try {
+    const application = await newApplication.save();
+    res.send(application);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+}
+
+export async function updateApplicationStatus(req, res) {
+  const { _id } = req.params;
+  const { status } = req.body;
+  const application = await Application.findById(_id);
+  if (application) {
+    application.status = status;
+    const updatedApplication = await application.save();
+    res.send(updatedApplication);
+  } else {
+    res.status(404).send({ message: "Application Not Found" });
   }
 }

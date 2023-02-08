@@ -1,4 +1,4 @@
-import Configuration from "../models/configurationModel.js";
+import Configuration from "../models/ConfigurationModel.js";
 
 export async function findBy_id(req, res) {
   Configuration.findById(req.params._id, (err, configuration) => {
@@ -39,6 +39,25 @@ export async function deleteConfiguration(req, res) {
     } else {
       res.status(404).res("Configuration could not found");
     }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+}
+
+export async function getConfiguration(req, res) {
+  try {
+    const configurations = await Configuration.find();
+    res.send(configurations);
+  } catch (error) {
+    res.status(500).send(err);
+  }
+}
+
+export async function addConfiguration(req, res) {
+  const newConfiguration = new Configuration(req.body);
+  try {
+    const configuration = await newConfiguration.save();
+    res.send(configuration);
   } catch (err) {
     res.status(500).send(err);
   }
