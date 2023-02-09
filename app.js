@@ -6,7 +6,8 @@ import applicationRoutes from "./api/routes/ApplicationRoutes.js";
 import configurationRoutes from "./api/routes/ConfigurationRoutes.js";
 import finderRoutes from "./api/routes/FinderRoutes.js";
 import tripRoutes from "./api/routes/TripRoutes.js";
-import initMongoDBConnection from "./config/mongoose.js";
+import initMongoDBConnection from "./api/config/mongoose.js";
+import swagger from "./docs/swagger.js";
 dotenv.config();
 
 const app = express();
@@ -19,6 +20,7 @@ applicationRoutes(app);
 configurationRoutes(app);
 finderRoutes(app);
 tripRoutes(app);
+swagger(app);
 
 try {
   await initMongoDBConnection();
