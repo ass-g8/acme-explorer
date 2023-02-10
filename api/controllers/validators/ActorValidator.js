@@ -30,11 +30,9 @@ const creationValidator = [
     .isString()
     .trim()
     .escape(),
-  check("photo").optional()
-    .isBase64(),
   check("role").exists({ checkNull: true, checkFalsy: true })
     .isString()
-    .isIn(["CUSTOMER", "CLERK", "ADMINISTRATOR"])
+    .isIn(["ADMINISTRATOR", "MANAGER", "EXPLORER", "SPONSOR"])
 ];
 
 export { creationValidator };
