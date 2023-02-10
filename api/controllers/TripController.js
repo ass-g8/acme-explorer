@@ -1,6 +1,6 @@
 import Trip from "../models/TripModel.js";
 
-export function findBy_id(req, res) {
+export function findById(req, res) {
   Trip.findById(req.params._id, (err, order) => {
     if (err) {
       res.send(err);
@@ -57,7 +57,6 @@ export async function addTrip(req, res) {
     const trip = await newTrip.save();
     res.send(trip);
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 }

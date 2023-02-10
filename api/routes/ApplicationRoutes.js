@@ -1,24 +1,26 @@
 "use-strict";
 import {
   getApplication,
-  findBy_id,
+  findById,
   updateApplication,
   deleteApplication,
   addApplication,
   updateApplicationStatus,
 } from "../controllers/ApplicationController.js";
-//import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
+// import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
 
 export default function (app) {
-  app.route("/api/v1/applications").get(getApplication).post(addApplication);
-  app
-    .route("/api/v1/applications/:id")
-    .get(findBy_id)
+  app.route("/api/v1/applications")
+    .get(getApplication)
+    .post(addApplication);
+
+  app.route("/api/v1/applications/:id")
+    .get(findById)
     .put(updateApplication)
     .delete(deleteApplication);
-  app
-    .route("/api/v1/applications/:id/change-status")
+
+  app.route("/api/v1/applications/:id/change-status")
     .patch(updateApplicationStatus);
-  //app.route("/api/v1/applications/:id/change-comment");
-  //app.route("/api/v1/applications/:id/reject");
+  // app.route("/api/v1/applications/:id/change-comment");
+  // app.route("/api/v1/applications/:id/reject");
 }

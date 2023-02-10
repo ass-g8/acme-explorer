@@ -1,7 +1,7 @@
 "use strict";
 import Actor from "../models/ActorModel.js";
 
-export async function findBy_id(req, res) {
+export async function findById(req, res) {
   try {
     const actor = await Actor.findById(req.params._id);
     if (actor) {

@@ -1,7 +1,7 @@
 "use strict";
 import Finder from "../models/FinderModel.js";
 
-export async function findBy_id(req, res) {
+export async function findById(req, res) {
   try {
     const finder = await Finder.findById(req.params._id);
     if (finder) {
@@ -58,7 +58,6 @@ export async function getFinder(req, res) {
 }
 
 export async function addFinder(req, res) {
-  console.log(req.body);
   const newFinder = new Finder(req.body);
   try {
     const finder = await newFinder.save();

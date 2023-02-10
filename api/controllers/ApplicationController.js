@@ -1,6 +1,6 @@
 import Application from "../models/ApplicationModel.js";
 
-export async function findBy_id(req, res) {
+export async function findById(req, res) {
   Application.findById(req.params._id, (err, application) => {
     if (err) {
       res.send(err);
@@ -48,7 +48,7 @@ export async function getApplication(req, res) {
   try {
     const applications = await Application.find();
     res.send(applications);
-  } catch (error) {
+  } catch (err) {
     res.status(500).send(err);
   }
 }

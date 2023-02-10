@@ -1,6 +1,6 @@
 import Configuration from "../models/ConfigurationModel.js";
 
-export async function findBy_id(req, res) {
+export async function findById(req, res) {
   Configuration.findById(req.params._id, (err, configuration) => {
     if (err) {
       res.send(err);
@@ -48,7 +48,7 @@ export async function getConfiguration(req, res) {
   try {
     const configurations = await Configuration.find();
     res.send(configurations);
-  } catch (error) {
+  } catch (err) {
     res.status(500).send(err);
   }
 }

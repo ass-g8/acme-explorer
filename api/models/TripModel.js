@@ -4,6 +4,7 @@ import dateFormat from "dateformat";
 import { customAlphabet } from "nanoid";
 import { schema as sponsorshipSchema } from "./SponsorshipModel.js";
 import { schema as stageSchema } from "./StageModel.js";
+
 const idGenerator = customAlphabet(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
   4
@@ -18,7 +19,7 @@ const tripSchema = new mongoose.Schema(
         validator: function (v) {
           return /\d{6}-\w{4}/.test(v);
         },
-        message: 'ticker is not valid!, Pattern("YYMMDD-XXXX")',
+        message: "ticker is not valid!, Pattern(\"YYMMDD-XXXX\")",
       },
     },
     title: {

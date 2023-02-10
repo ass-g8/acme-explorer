@@ -22,11 +22,12 @@ finderRoutes(app);
 tripRoutes(app);
 swagger(app);
 
-try {
-  await initMongoDBConnection();
-  app.listen(port, function () {
-    console.log("ACME-Explorer RESTful API server started on: " + port);
+initMongoDBConnection()
+  .then(() => {
+    app.listen(port, function () {
+      console.log("ACME-Explorer RESTful API server started on: " + port);
+    });
+  })
+  .catch((err) => {
+    console.error("ACME-Explorer RESTful API could not connect to DB " + err);
   });
-} catch (err) {
-  console.error("ACME-Explorer RESTful API could not connect to DB " + err);
-}
