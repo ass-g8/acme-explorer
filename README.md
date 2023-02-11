@@ -6,7 +6,7 @@ ACME-Explorer Backend Project
 
 Problem domain models that are implemented in the developed system.
 
-![UML Class Diagram](./docs/uml_acme-explorer.png)
+![UML Class Diagram](./docs/uml_acme-explorer_110223.png)
 
 ## Endpoints
 
