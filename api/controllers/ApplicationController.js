@@ -1,7 +1,7 @@
 import Application from "../models/ApplicationModel.js";
 
 export async function findById(req, res) {
-  Application.findById(req.params._id, (err, application) => {
+  Application.findById(req.params.id, (err, application) => {
     if (err) {
       res.send(err);
     } else {
@@ -13,7 +13,7 @@ export async function findById(req, res) {
 export async function updateApplication(req, res) {
   try {
     const application = await Application.findOneAndUpdate(
-      { _id: req.params._id },
+      { _id: req.params.id },
       req.body,
       { new: true }
     );
@@ -31,7 +31,7 @@ export async function updateApplication(req, res) {
 export async function deleteApplication(req, res) {
   try {
     const deletionResponse = await Application.deleteOne({
-      _id: req.params._id,
+      _id: req.params.id,
     });
 
     if (deletionResponse.deletedCount > 0) {
@@ -64,9 +64,9 @@ export async function addApplication(req, res) {
 }
 
 export async function updateApplicationStatus(req, res) {
-  const { _id } = req.params;
+  const { id } = req.params;
   const { status } = req.body;
-  const application = await Application.findById(_id);
+  const application = await Application.findById(id);
   if (application) {
     application.status = status;
     const updatedApplication = await application.save();
