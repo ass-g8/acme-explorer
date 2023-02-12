@@ -23,5 +23,6 @@ module.exports = {
       named: "never",
       asyncArrow: "always"
     }],
+    "operator-linebreak": ["error", "after"]
   },
 };
