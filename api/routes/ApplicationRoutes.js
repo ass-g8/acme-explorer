@@ -2,10 +2,10 @@
 import {
   getApplication,
   findById,
-  updateApplication,
-  deleteApplication,
   addApplication,
   updateApplicationStatus,
+  updateApplicationComment,
+  rejectApplication
 } from "../controllers/ApplicationController.js";
 // import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
 
@@ -16,11 +16,13 @@ export default function (app) {
 
   app.route("/api/v1/applications/:id")
     .get(findById)
-    .put(updateApplication)
-    .delete(deleteApplication);
 
   app.route("/api/v1/applications/:id/change-status")
     .patch(updateApplicationStatus);
-  // app.route("/api/v1/applications/:id/change-comment");
-  // app.route("/api/v1/applications/:id/reject");
+
+  app.route("/api/v1/applications/:id/change-comment")
+    .patch(updateApplicationComment);
+
+  app.route("/api/v1/applications/:id/reject")
+    .patch(rejectApplication);
 }
