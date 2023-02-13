@@ -1,7 +1,7 @@
 import { check } from "express-validator";
 
 const creationValidator = [
-  check("comment").exists({ checkNull: true, checkFalsy: true })
+  check("comment").exists({ checkNull: true })
     .isString()
     .trim()
     .escape(),

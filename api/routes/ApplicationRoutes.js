@@ -1,6 +1,7 @@
 "use-strict";
 import {
-  getApplication,
+  getApplicationByExplorerId,
+  getApplicationByTripId,
   findById,
   addApplication,
   updateApplicationStatus,
@@ -12,12 +13,17 @@ import handleExpressValidation from '../middlewares/ValidationHandlingMiddleware
 
 export default function (app) {
   app.route("/api/v1/applications")
-    .get(getApplication)
     .post(
       creationValidator,
       handleExpressValidation,
       addApplication
     );
+
+  app.route("/api/v1/applications/explorer/:explorerId")
+    .get(getApplicationByExplorerId)
+
+  app.route("/api/v1/applications/trip/:tripId")
+    .get(getApplicationByTripId)
 
   app.route("/api/v1/applications/:id")
     .get(findById)

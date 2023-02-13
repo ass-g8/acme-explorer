@@ -1,25 +1,5 @@
 paths:
   /api/v1/applications:
-    get:
-      tags: 
-        - Applications
-      description: Returns all applications
-      operationId: getApplication
-      responses:
-        200:
-          description: Application list
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/application"
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
     post:
       tags: 
         - Applications
@@ -42,6 +22,58 @@ paths:
       responses:
         201:
           description: Application
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/application"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /api/v1/applications/explorer/{explorerId}:
+    get:
+      tags: 
+        - Applications
+      description: Returns explorer application groupping by status
+      operationId: aggregate
+      parameters:
+        - required: true
+          name: explorerId
+          description: id of the explorer logged into the system
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: Applications found by explorerId
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/application"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /api/v1/applications/trip/{tripId}:
+    get:
+      tags: 
+        - Applications
+      description: Returns trip application
+      operationId: find
+      parameters:
+        - required: true
+          name: tripId
+          description: id of the trip
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: Applications found by tripId
           content:
             application/json:
               schema:
