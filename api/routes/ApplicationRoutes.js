@@ -10,12 +10,16 @@ import {
 } from "../controllers/ApplicationController.js";
 import { creationValidator, statusValidator, commentValidator, rejectValidator } from '../controllers/validators/ApplicationValidator.js';
 import handleExpressValidation from '../middlewares/ValidationHandlingMiddleware.js';
+import {checkApplicationExists, checkInvalidTrip} from '../middlewares/BusinessRulesApplication.js';
+
 
 export default function (app) {
   app.route("/api/v1/applications")
     .post(
       creationValidator,
       handleExpressValidation,
+      checkApplicationExists,
+      checkInvalidTrip,
       addApplication
     );
 
