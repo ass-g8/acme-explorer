@@ -74,7 +74,6 @@ export async function getActors(req, res) {
 
 export async function addActor(req, res) {
   const newActor = new Actor(req.body);
-  newActor.banned = false;
   newActor.preferredLanguage = "es";
   try {
     const actor = await newActor.save();
