@@ -174,6 +174,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/not-found-error"
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validation-error"
         500:
           description: Unexpected error
           content:
@@ -239,6 +245,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/not-found-error"
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validation-error"
         500:
           description: Unexpected error
           content:
@@ -277,6 +289,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/not-found-error"
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validation-error"
         500:
           description: Unexpected error
           content:
