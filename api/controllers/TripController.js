@@ -42,9 +42,31 @@ export async function deleteTrip(req, res) {
   }
 }
 
+function _generateQuery(query) {
+  const { keyword, minPrice, maxPrice, minDate, maxDate } = query;
+  let finder = {};
+  if(keyword) {
+    finder = { $text: { $search: keyword } };
+  }
+  if(minPrice) {
+    finder = { ...finder, price: { $gte: parseFloat(minPrice) } };
+  }
+  if(maxPrice) {
+    finder = { ...finder, price: { $lte: parseFloat(maxPrice) } };
+  }
+  if(minDate) {
+    finder = { ...finder, startDate: { $gte: minDate } };
+  }
+  if(maxDate) {
+    finder = { ...finder, endDate: { $lte: maxDate } };
+  }
+  return finder;
+}
+
 export async function getTrip(req, res) {
+  const finder = _generateQuery(req.query);
   try {
-    const trips = await Trip.find({});
+    const trips = await Trip.find(finder);
     res.send(trips);
   } catch (err) {
     res.status(500).send(err);

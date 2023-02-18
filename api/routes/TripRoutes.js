@@ -6,11 +6,18 @@ import {
   deleteTrip,
   addTrip,
 } from "../controllers/TripController.js";
-// import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
+import { filterValidator } from "../controllers/validators/FinderValidator.js";
+import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
+import { addFinder } from "../controllers/FinderController.js";
 
 export default function (app) {
   app.route("/api/v1/trips")
-    .get(getTrip)
+    .get(
+      filterValidator,
+      handleExpressValidation,
+      addFinder,
+      getTrip
+    )
     .post(addTrip);
 
   app.route("/api/v1/trips/:id")
