@@ -218,12 +218,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error" 
-
-components:
-  $ref:
-    - "./components/schemas/actor.yaml"
-    - "./components/schemas/application.yaml"
-    - "./components/schemas/finder.yaml"
-    - "./components/schemas/trip.yaml"
-    - "./components/schemas/configuration.yaml"
-    - "./components/schemas/error.yaml"
+/api/v1/applications/{id}/pay:
+    post:
+      tags: 
+        - Applications
+      description: Pay an application based on its id
+      operationId: payApplication
+      parameters:
+        - required: true
+          name: id
+          description: id of the application
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/application"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error" 

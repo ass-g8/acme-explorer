@@ -1,16 +1,17 @@
 "use-strict";
 import {
-  getApplicationByExplorerId,
-  getApplicationByTripId,
+  getApplicationsByExplorerId,
+  getApplicationsByTripId,
   findById,
   addApplication,
   updateApplicationStatus,
   updateApplicationComment,
-  rejectApplication
+  rejectApplication,
+  payApplication
 } from "../controllers/ApplicationController.js";
 import { creationValidator, statusValidator, commentValidator, rejectValidator } from '../controllers/validators/ApplicationValidator.js';
 import handleExpressValidation from '../middlewares/ValidationHandlingMiddleware.js';
-import {checkApplicationExists, checkInvalidTrip} from '../middlewares/BusinessRulesApplication.js';
+import { checkApplicationExists, checkInvalidTrip } from '../middlewares/BusinessRulesApplication.js';
 
 
 export default function (app) {
@@ -24,10 +25,10 @@ export default function (app) {
     );
 
   app.route("/api/v1/applications/explorer/:explorerId")
-    .get(getApplicationByExplorerId)
+    .get(getApplicationsByExplorerId)
 
   app.route("/api/v1/applications/trip/:tripId")
-    .get(getApplicationByTripId)
+    .get(getApplicationsByTripId)
 
   app.route("/api/v1/applications/:id")
     .get(findById)
@@ -51,5 +52,10 @@ export default function (app) {
       rejectValidator,
       handleExpressValidation,
       rejectApplication
+    );
+
+  app.route("/api/v1/applications/:id/pay")
+    .post(
+      payApplication
     );
 }
