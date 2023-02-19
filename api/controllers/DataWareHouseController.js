@@ -2,9 +2,9 @@ import DataWareHouse from '../models/DataWareHouseModel.js'
 import Trip from "../models/TripModel.js";
 import Application from "../models/ApplicationModel.js";
 import Finder from "../models/FinderModel.js";
+import mongoose from "mongoose";
 
 const listIndicators = (req, res) => {
-    console.log("Listing indicators...")
     DataWareHouse.find().exec((err, indicators) => {
         if (err) {
             res.send(err)
@@ -12,6 +12,33 @@ const listIndicators = (req, res) => {
             res.json(indicators)
         }
     })
+}
+
+const generateIndicators = async (req, res) => {
+    const tripsManager = await tripsManagedByManager(req, res);
+    const applicationsTrip = await applicationsPerTrip(req, res);
+    const price = await tripsPrice(req, res);
+    const ratioApplicationsStatus = await ratioApplicationsByStatus(req, res);
+    const averagePrice = await averagePriceRange(req, res);
+    const topKeywords = await topSearchedKeywords(req, res);
+    const amountSpent = await amountSpentByExplorer(req, res);
+
+    const indicators = new DataWareHouse({
+        tripsManagedByManager: tripsManager,
+        applicationsPerTrip: applicationsTrip,
+        tripsPrice: price,
+        ratioApplicationsByStatus: ratioApplicationsStatus,
+        averagePriceRange: averagePrice,
+        topSearchedKeywords: topKeywords,
+        amountSpentByExplorer: amountSpent
+    });
+
+    try {
+        await indicators.save();
+        res.status(201).json({ message: "Indicators generated successfully" })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
 }
 
 async function tripsManagedByManager(req, res) {
@@ -159,31 +186,43 @@ async function topSearchedKeywords(req, res) {
     return topSearchedKeywords;
 }
 
-const generateIndicators = async (req, res) => {
-    console.log("Generating indicators...")
-    const tripsManager = await tripsManagedByManager(req, res);
-    const applicationsTrip = await applicationsPerTrip(req, res);
-    const price = await tripsPrice(req, res);
-    const ratioApplicationsStatus = await ratioApplicationsByStatus(req, res);
-    const averagePrice = await averagePriceRange(req, res);
-    const topKeywords = await topSearchedKeywords(req, res);
 
-    const indicators = new DataWareHouse({
-        trips_managed_by_manager: tripsManager,
-        applications_per_trip: applicationsTrip,
-        trips_price: price,
-        ratio_applications_by_status: ratioApplicationsStatus,
-        average_price_range: averagePrice,
-        top_searched_keywords: topKeywords
-    });
-
-    try {
-        await indicators.save();
-        res.status(201).json({ message: "Indicators generated successfully" })
-    } catch (err) {
-        res.status(500).json({ message: err.message })
-    }
+export async function amountSpentByExplorer(req, res) {
+    const explorer_id = req.body.explorer_id;
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
+    const amountSpentByExplorer = await Application.aggregate([
+        {
+            '$match': {
+                'explorer_id': new mongoose.Types.ObjectId(explorer_id),
+                'status': 'ACCEPTED',
+                'paidAt': {
+                    '$gte': new Date(startDate),
+                    '$lt': new Date(endDate)
+                }
+            }
+        }, {
+            '$lookup': {
+                'from': 'trips',
+                'localField': 'trip_id',
+                'foreignField': '_id',
+                'as': 'trip'
+            }
+        }, {
+            '$unwind': {
+                'path': '$trip',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$group': {
+                '_id': 0,
+                'amount': {
+                    '$sum': '$trip.price'
+                }
+            }
+        }
+    ]);
+    return res.status(200).send(amountSpentByExplorer);
 }
-
 
 export { listIndicators, generateIndicators }

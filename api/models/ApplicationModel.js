@@ -31,6 +31,10 @@ const applicationSchema = new mongoose.Schema(
       ref: "Actor",
       required: "Application explorer required",
     },
+    paidAt: {
+      type: Date,
+      default: null,
+    }
   },
   { strict: false }
 );

@@ -2,13 +2,12 @@
 import mongoose from 'mongoose'
 
 const dataWareHouseSchema = new mongoose.Schema({
-    trips_managed_by_manager: {},
-    applications_per_trip: {},
-    trips_price: {},
-    ratio_applications_by_status: {}, 
-    average_price_range: {},
-    top_searched_keywords: {},
-    
+    tripsManagedByManager: {},
+    applicationsPerTrip: {},
+    tripsPrice: {},
+    ratioApplicationsByStatus: {}, 
+    averagePriceRange: {},
+    topSearchedKeywords: {}
 }, { strict: false })
 
 const model = mongoose.model('DataWareHouse', dataWareHouseSchema)
