@@ -1,0 +1,115 @@
+<diagram program="umletino" version="15.0.0"><zoom_level>9</zoom_level><element><id>UMLClass</id><coordinates><x>414</x><y>63</y><w>180</w><h>135</h></coordinates><panel_attributes>bg=yellow
+*Actor*
+--
++ name: String {NotBlank}
++ surname: String {NotBlank}
++ email: String {Email, NotBlank}
++ phone: String
++ address: String
++ password: String {NotBlank}
++ preferredLanguage: String
++ banned: Boolean</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>342</x><y>423</y><w>198</w><h>162</h></coordinates><panel_attributes>bg=yellow
+*Trip*
+--
++ ticker: String {NotBlank}
++ title: String {NotBlank}
++ description: String {NotBlank}
++ / price: Number {NotBlank}
++ requirements: String[] {NotBlank}
++ startDate: Date {NotBlank}
++ endDate: Date {NotBlank}
++ imageCollection: Image
++ status: TripStatus
++ cancellationReason: String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>360</x><y>315</y><w>90</w><h>27</h></coordinates><panel_attributes>bg=pink
+Manager</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>549</x><y>315</y><w>90</w><h>27</h></coordinates><panel_attributes>bg=pink
+Administrator</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>720</x><y>315</y><w>90</w><h>27</h></coordinates><panel_attributes>bg=pink
+Explorer</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>180</x><y>315</y><w>90</w><h>27</h></coordinates><panel_attributes>bg=pink
+Sponsor</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>396</x><y>189</y><w>126</w><h>144</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>120;10;120;110;10;110;10;140</additional_attributes></element><element><id>Relation</id><coordinates><x>585</x><y>279</y><w>27</w><h>54</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;10;10;40</additional_attributes></element><element><id>Relation</id><coordinates><x>486</x><y>270</y><w>297</w><h>63</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;20;310;20;310;50</additional_attributes></element><element><id>Relation</id><coordinates><x>216</x><y>270</y><w>297</w><h>63</h></coordinates><panel_attributes></panel_attributes><additional_attributes>310;20;10;20;10;50</additional_attributes></element><element><id>UMLClass</id><coordinates><x>783</x><y>423</y><w>117</w><h>108</h></coordinates><panel_attributes>bg=yellow
+*Finder*
+--
++ date: Date
++ keyword: String
++ minPrice: Number
++ maxPrice: Number
++ startDate: Date
++ endDate: Date</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>351</x><y>675</y><w>180</w><h>63</h></coordinates><panel_attributes>bg=cyan
+*Stage*
+--
++ title: String {NotBlank}
++ description: String {NotBlank}
++ price: String {NotBlank}
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>432</x><y>576</y><w>45</w><h>117</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1..*</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>UMLClass</id><coordinates><x>612</x><y>423</y><w>153</w><h>81</h></coordinates><panel_attributes>bg=yellow
+*Application*
+--
++ requestDate: Date
++ status: ApplicationStatus
++ comment: String
++ rejectedReason: String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>63</x><y>414</y><w>180</w><h>81</h></coordinates><panel_attributes>bg=cyan
+*Sponsorship*
+--
++ banner: Image {NotBlank}
++ landingPage: String {NotBlank}
++ / amount: Number
++ status: SponsorshipStatus</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>396</x><y>333</y><w>72</w><h>108</h></coordinates><panel_attributes>lt=-
+m1=*
+m2=1</panel_attributes><additional_attributes>50;100;50;60;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>225</x><y>63</y><w>162</w><h>81</h></coordinates><panel_attributes>bg=yellow
+*Configuration*
+--
++ sponsorshipPrice: Number
++ defaultLanguage: String
++ cacheLifeTime: Number
++ paginationSize: Number</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>684</x><y>333</y><w>81</w><h>108</h></coordinates><panel_attributes>lt=-
+m1=*
+m2=1</panel_attributes><additional_attributes>10;100;10;70;70;10</additional_attributes></element><element><id>Relation</id><coordinates><x>531</x><y>477</y><w>99</w><h>36</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=*</panel_attributes><additional_attributes>10;10;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>144</x><y>333</y><w>99</w><h>99</h></coordinates><panel_attributes>lt=-
+m1=*
+m2=1</panel_attributes><additional_attributes>10;90;10;60;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>144</x><y>486</y><w>216</w><h>81</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+
+m2=*</panel_attributes><additional_attributes>220;70;10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>774</x><y>333</y><w>99</w><h>108</h></coordinates><panel_attributes>lt=-
+m1=*
+m2=1</panel_attributes><additional_attributes>80;100;80;70;10;10</additional_attributes></element><element><id>UMLNote</id><coordinates><x>216</x><y>594</y><w>135</w><h>63</h></coordinates><panel_attributes>The price of a trip is
+automatically computed 
+build-ing on the price
+of the individual stages.
+bg=light_gray</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>486</y><w>90</w><h>126</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;120;10;40;80;10</additional_attributes></element><element><id>UMLNote</id><coordinates><x>225</x><y>162</y><w>135</w><h>99</h></coordinates><panel_attributes>Tickers must adhere 
+to the following pattern: 
+“YYMMDD-XXXX”, where
+YYMMDD refers, year,
+month and day, and
+XXXX are four uppercase
+random letters.
+bg=light_gray</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>279</x><y>252</y><w>81</w><h>216</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;70;220</additional_attributes></element><element><id>UMLClass</id><coordinates><x>621</x><y>63</y><w>108</w><h>81</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+TripStatus
+--
+DRAFT
+PUBLISHED
+CANCELLED</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>738</x><y>153</y><w>108</w><h>108</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+ApplicationStatus
+--
+PENDING
+DUE
+ACCEPTED
+REJECTED
+CANCELLED</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>621</x><y>153</y><w>108</w><h>90</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+Role
+--
+ADMINISTRATOR
+MANAGER
+EXPLORER
+SPONSOR</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>738</x><y>63</y><w>108</w><h>81</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+SponsorshipStatus
+--
+PENDING
+ACCEPTED
+CANCELLED</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>693</x><y>558</y><w>135</w><h>45</h></coordinates><panel_attributes>The system should
+record the reason why an
+application is rejected.
+bg=light_gray</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>567</x><y>621</y><w>135</w><h>45</h></coordinates><panel_attributes>The system should
+record the reason why a
+trip is cancelled.
+bg=light_gray</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>531</x><y>567</y><w>117</w><h>72</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;110;60</additional_attributes></element><element><id>Relation</id><coordinates><x>612</x><y>495</y><w>153</w><h>81</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;150;70</additional_attributes></element><element><id>UMLNote</id><coordinates><x>63</x><y>594</y><w>144</w><h>45</h></coordinates><panel_attributes>The sponsorship
+amount cost is set from
+the sponsorships flat rate.
+bg=light_gray</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>63</x><y>486</y><w>81</w><h>126</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>70;120;10;10</additional_attributes></element><element><id>UMLFrame</id><coordinates><x>54</x><y>45</y><w>855</w><h>711</h></coordinates><panel_attributes>*pkg acme-explorer*</panel_attributes><additional_attributes></additional_attributes></element></diagram>
