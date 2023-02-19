@@ -9,7 +9,7 @@ export async function getApplicationsByExplorerId(req, res) {
     const applications = await Application.aggregate([
       { $match: { explorer_id: new mongoose.Types.ObjectId(explorerId) } },
       { $group: { _id: "$status", applications: { $push: "$$ROOT" } } }
-      ]);
+    ]);
     res.send(applications);
   } catch (err) {
     res.status(500).send(err);
@@ -90,7 +90,11 @@ export async function rejectApplication(req, res) {
     const updatedApplication = await application.save();
     res.send(updatedApplication);
   } else {
-    res.status(404).send({ message: "Application Not Found" });
+    if (application.status === "PENDING") {
+      res.status(400).send({ message: "Application is not pending" });
+    } else {
+      res.status(404).send({ message: "Application Not Found" });
+    }
   }
 }
 
