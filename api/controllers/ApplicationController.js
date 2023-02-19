@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Application from "../models/ApplicationModel.js";
 
 
-export async function getApplicationsByExplorerId(req, res) {
+export async function findApplicationsByExplorerId(req, res) {
   // explorer_id is the actor_id logged into the system
   const { explorerId } = req.params;
   try {
@@ -16,7 +16,7 @@ export async function getApplicationsByExplorerId(req, res) {
   }
 }
 
-export async function getApplicationsByTripId(req, res) {
+export async function findApplicationsByTripId(req, res) {
   // this action is only available for managers
   const { tripId } = req.params;
   try {

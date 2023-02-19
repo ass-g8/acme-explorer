@@ -1,7 +1,7 @@
 "use-strict";
 import {
-  getApplicationsByExplorerId,
-  getApplicationsByTripId,
+  findApplicationsByExplorerId,
+  findApplicationsByTripId,
   findById,
   addApplication,
   updateApplicationStatus,
@@ -25,10 +25,10 @@ export default function (app) {
     );
 
   app.route("/api/v1/applications/explorer/:explorerId")
-    .get(getApplicationsByExplorerId)
+    .get(findApplicationsByExplorerId)
 
   app.route("/api/v1/applications/trip/:tripId")
-    .get(getApplicationsByTripId)
+    .get(findApplicationsByTripId)
 
   app.route("/api/v1/applications/:id")
     .get(findById)
