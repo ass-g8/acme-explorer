@@ -23,7 +23,7 @@ const _checkFormatPeriod = async (value, { req }) => {
     }
 }
 
-const cubeValidator = [
+const cube1Validator = [
     check("period")
         .exists({ checkNull: true, checkFalsy: true })
         .isString()
@@ -35,4 +35,22 @@ const cubeValidator = [
         .isMongoId()
 ];
 
-export { cubeValidator };
+const cube2Validator = [
+    check("period")
+        .exists({ checkNull: true, checkFalsy: true })
+        .isString()
+        .trim()
+        .escape()
+        .custom(_checkFormatPeriod),
+    check("theta")
+        .exists({ checkNull: true, checkFalsy: true })
+        .isString()
+        .trim()
+        .escape()
+        .isIn(["eq", "ne", "gt", "gte", "lt", "lte"]),
+    check("v")
+        .exists({ checkNull: true, checkFalsy: true })
+        .isNumeric()
+];
+
+export { cube1Validator, cube2Validator };

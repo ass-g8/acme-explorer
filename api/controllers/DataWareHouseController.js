@@ -225,4 +225,68 @@ export async function amountSpentByExplorer(req, res) {
     return res.status(200).send(amountSpentByExplorer);
 }
 
+export async function explorersByAmountSpent(req, res) {
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
+    const v = req.body.v;
+    let operation = {};
+    switch (req.body.theta) {
+        case "gt":
+            operation = { "$gt": v };
+            break;
+        case "gte":
+            operation = { "$gte": v };
+            break;
+        case "lt":
+            operation = { "$lt": v };
+            break;
+        case "lte":
+            operation = { "$lte": v };
+            break;
+        case "eq":
+            operation = { "$eq": v };
+            break;
+        default:
+            operation = { "$eq": v };
+            break;
+    }
+    
+    const explorersByAmountSpent = await Application.aggregate([
+        {
+            '$match': {
+                'status': 'ACCEPTED',
+                'paidAt': {
+                    '$gte': new Date(startDate),
+                    '$lt': new Date(endDate)
+                }
+            }
+        }, {
+            '$lookup': {
+                'from': 'trips',
+                'localField': 'trip_id',
+                'foreignField': '_id',
+                'as': 'trip'
+            }
+        }, {
+            '$unwind': {
+                'path': '$trip',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$group': {
+                '_id': '$explorer_id',
+                'amount': {
+                    '$sum': '$trip.price'
+                }
+            }
+        },
+        {
+            '$match': {
+                'amount': operation
+            }
+        }
+    ]);
+    return res.status(200).send(explorersByAmountSpent);
+}
+
 export { listIndicators, generateIndicators }
