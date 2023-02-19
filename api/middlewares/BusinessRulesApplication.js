@@ -15,7 +15,7 @@ export const checkApplicationExists = async (req, res, next) => {
 
 export const checkInvalidTrip = async (req, res, next) => {
     const trip = await Trip.findOne({ _id: req.body.trip_id });
-    if (!trip || trip.startDate < Date.now() || trip.status === "CANCELLED") {
+    if (!trip || trip.startDate <= Date.now() || trip.status === "CANCELLED") {
         res.status(400).send({ message: "Trip is not available" });
     } else {
         next();
