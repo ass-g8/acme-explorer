@@ -1,6 +1,6 @@
 "use-strict";
 import {
-  getTrips,
+  findTrips,
   findById,
   updateTrip,
   deleteTrip,
@@ -14,11 +14,18 @@ import {
   updateTripSponsorship,
   updateTripSponsorshipStatus
 } from "../controllers/TripController.js";
-// import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
+import { filterValidator } from "../controllers/validators/FinderValidator.js";
+import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
+import { addFinder } from "../controllers/FinderController.js";
 
 export default function (app) {
   app.route("/api/v1/trips")
-    .get(getTrips)
+    .get(
+      filterValidator,
+      handleExpressValidation,
+      addFinder,
+      findTrips
+    )
     .post(addTrip);
 
   app.route("/api/v1/trips/:id")

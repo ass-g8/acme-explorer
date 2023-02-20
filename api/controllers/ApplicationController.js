@@ -1,19 +1,22 @@
+import mongoose from "mongoose";
 import Application from "../models/ApplicationModel.js";
 
 
-export async function getApplicationByExplorerId(req, res) {
+export async function findApplicationsByExplorerId(req, res) {
   // explorer_id is the actor_id logged into the system
   const { explorerId } = req.params;
   try {
-    //agreegate is used to group the applications by status 
-    const applications = await Application.find({ explorer_id: explorerId });
+    const applications = await Application.aggregate([
+      { $match: { explorer_id: new mongoose.Types.ObjectId(explorerId) } },
+      { $group: { _id: "$status", applications: { $push: "$$ROOT" } } }
+    ]);
     res.send(applications);
   } catch (err) {
     res.status(500).send(err);
   }
 }
 
-export async function getApplicationByTripId(req, res) {
+export async function findApplicationsByTripId(req, res) {
   // this action is only available for managers
   const { tripId } = req.params;
   try {
@@ -87,6 +90,14 @@ export async function rejectApplication(req, res) {
     const updatedApplication = await application.save();
     res.send(updatedApplication);
   } else {
-    res.status(404).send({ message: "Application Not Found" });
+    if (application.status === "PENDING") {
+      res.status(400).send({ message: "Application is not pending" });
+    } else {
+      res.status(404).send({ message: "Application Not Found" });
+    }
   }
+}
+
+export async function payApplication(req, res) {
+  res.status(200).send({ message: "Application paid" });
 }

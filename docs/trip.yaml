@@ -4,7 +4,7 @@ paths:
       tags:
         - Trips
       description: Returns all trips
-      operationId: getTrip
+      operationId: findTrips
       responses:
         200:
           description: Trip list

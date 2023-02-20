@@ -13,14 +13,15 @@ const finderSchema = new mongoose.Schema({
     type: Number,
     min: 0.0
   },
-  startDate: {
+  minDate: {
     type: Date,
   },
-  endDate: {
+  maxDate: {
     type: Date,
   },
   date: {
     type: Date,
+    default: Date.now
   },
   explorer_id: {
     type: mongoose.Schema.Types.ObjectId,

@@ -5,19 +5,19 @@ info:
   description: API REST for travel agency
 
 paths:
-  /api/v1/finders:
+  /api/v1/trips:
     get:
-      description: Returns all finders
-      operationId: getFinder
+      description: Returns all trips
+      operationId: getTrip
       responses:
         200:
-          description: Finder list
+          description: Trip list
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/finder"
+                  $ref: "#/components/schemas/trip"
         default:
           description: Unexpected error
           content:
@@ -25,57 +25,42 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
     post:
-      description: Creates a new finder
-      operationId: addFinder
+      description: Creates a new trip
+      operationId: addTrip
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                explorer_id:
-                  type: string
-                date:
-                  type: string
-                keyword:
-                  type: string
-                minPrice:
-                  type: number
-                maxPrice:
-                  type: number
-                startDate:
-                  type: string
-                endDate:
-                  type: string
-        description: Finder to be created
+              $ref: "#/components/schemas/trip"
+        description: Trip to be created
         required: true
       responses:
         201:
-          description: Finder
+          description: Trip
         default:
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
-  /api/v1/finders/{_id}:
+  /api/v1/trips/{_id}:
     get:
-      description: Returns a single finder by its _id
+      description: Returns a single trip by its _id
       operationId: findBy_id
       parameters:
         - required: true
           name: _id
-          description: _id of the finder to fetch
+          description: _id of the trip to fetch
           in: path
           schema:
             type: string
       responses:
         200:
-          description: Finder found by _id
+          description: Trip found by _id
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/finder"
+                $ref: "#/components/schemas/trip"
         default:
           description: Unexpected error
           content:
@@ -83,12 +68,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
     put:
-      description: Update a finder based on its _id
-      operationId: updateFinder
+      description: Update a trip based on its _id
+      operationId: updateTrip
       parameters:
         - required: true
           name: _id
-          description: _id of the finder to update
+          description: _id of the trip to update
           in: path
           schema:
             type: string
@@ -96,25 +81,12 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                date:
-                  type: string
-                keyword:
-                  type: string
-                minPrice:
-                  type: number
-                maxPrice:
-                  type: number
-                startDate:
-                  type: string
-                endDate:
-                  type: string
-        description: Finder to be updated
+              $ref: "#/components/schemas/trip"
+        description: Trip to be updated
         required: true
       responses:
         "204":
-          description: Finder updated
+          description: Trip updated
         default:
           description: Unexpected error
           content:
@@ -122,125 +94,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
     delete:
-      description: Deletes a single finder based on its _id
-      operationId: deleteFinder
+      description: Deletes a single trip based on its _id
+      operationId: deleteTrip
       parameters:
         - required: true
           name: _id
-          description: _id of the finder to delete
+          description: _id of the trip to delete
           in: path
           schema:
             type: string
       responses:
         "204":
-          description: Finder deleted
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-  /api/v1/configurations:
-    get:
-      description: Returns all configurations
-      operationId: getConfiguration
-      responses:
-        200:
-          description: Configuration list
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/configuration"
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-    post:
-      description: Creates a new configuration
-      operationId: addConfiguration
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/configuration"
-        description: Configuration to be created
-        required: true
-      responses:
-        201:
-          description: Configuration
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-  /api/v1/configurations/{_id}:
-    get:
-      description: Returns a single configuration by its _id
-      operationId: findBy_id
-      parameters:
-        - required: true
-          name: _id
-          description: _id of the configuration to fetch
-          in: path
-          schema:
-            type: number
-      responses:
-        200:
-          description: Configuration found by _id
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/configuration"
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-    put:
-      description: Update a configuration based on its _id
-      operationId: updateConfiguration
-      parameters:
-        - required: true
-          name: _id
-          description: _id of the configuration to update
-          in: path
-          schema:
-            type: number
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/configuration"
-        description: Configuration to be updated
-        required: true
-      responses:
-        "204":
-          description: Configuration updated
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-    delete:
-      description: Deletes a single configuration based on its _id
-      operationId: deleteConfiguration
-      parameters:
-        - required: true
-          name: _id
-          description: _id of the configuration to delete
-          in: path
-          schema:
-            type: number
-      responses:
-        "204":
-          description: Configuration deleted
+          description: Trip deleted
         default:
           description: Unexpected error
           content:
@@ -252,7 +117,6 @@ components:
   $ref:
     - "./components/schemas/actor.yaml"
     - "./components/schemas/application.yaml"
-    - "./components/schemas/finder.yaml"
     - "./components/schemas/trip.yaml"
     - "./components/schemas/configuration.yaml"
     - "./components/schemas/error.yaml"
