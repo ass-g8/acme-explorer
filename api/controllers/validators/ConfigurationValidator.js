@@ -1,5 +1,5 @@
 import { check } from "express-validator";
-import { isFloat } from "./UtilsValidator";
+import { isFloat } from "./UtilsValidator.js";
 
 const configurationValidator = [
   check("sponsorshipPrice", "The sponsorship flat must be greater than zero")
