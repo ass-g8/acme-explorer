@@ -1,31 +1,34 @@
-'use strict'
+"use strict";
 import {
   listIndicators,
+  lastIndicator,
   generateIndicators,
   amountSpentByExplorer,
   explorersByAmountSpent
-} from '../controllers/DataWareHouseController.js';
-import { cube1Validator, cube2Validator } from '../controllers/validators/DataWareHouseValidator.js';
+} from "../controllers/DataWareHouseController.js";
+import { cube1Validator, cube2Validator } from "../controllers/validators/DataWareHouseValidator.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
 import { periodDecoder } from "../middlewares/PeriodDecoder.js";
 
 export default function (app) {
-
-  app.route('/api/v1/dashboard')
+  app.route("/api/v1/dashboard")
     .get(listIndicators)
-    .post(generateIndicators)
+    .post(generateIndicators);
 
-  app.route('/api/v1/cube/amountSpentByExplorer')
+  app.route("/api/v1/dashboard/latest")
+    .get(lastIndicator);
+
+  app.route("/api/v1/cube/amountSpentByExplorer")
     .post(
       cube1Validator,
       handleExpressValidation,
       periodDecoder,
-      amountSpentByExplorer)
+      amountSpentByExplorer);
 
-  app.route('/api/v1/cube/explorersByAmountSpent')
+  app.route("/api/v1/cube/explorersByAmountSpent")
     .post(
       cube2Validator,
       handleExpressValidation,
       periodDecoder,
-      explorersByAmountSpent)
+      explorersByAmountSpent);
 }
