@@ -72,6 +72,8 @@ const tripSchema = new mongoose.Schema(
   { strict: false }
 );
 
+tripSchema.index({ ticker: 'text', title: 'text', description: 'text' })
+
 tripSchema.pre("save", function (callback) {
   const newTrip = this;
   const day = dateFormat(new Date(), "yymmdd");
