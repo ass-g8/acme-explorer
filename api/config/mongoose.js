@@ -13,7 +13,7 @@ const mongoDBHostname = process.env.DATABASE_HOST || "localhost";
 const mongoDBPort = process.env.DATABASE_PORT || "27017";
 const mongoDBName = process.env.DATABASE_NAME || "ACME-Explorer";
 
-const mongoDBURI =
+let mongoDBURI =
   process.env.DATABASE_URI ||
   "mongodb://" +
     mongoDBCredentials +
@@ -22,6 +22,11 @@ const mongoDBURI =
     mongoDBPort +
     "/" +
     mongoDBName;
+
+if (process.env.TESTING === "1") {
+  mongoDBURI = "mongodb://localhost:27017/test";
+}
+
 const mongoDBOptions = {
   connectTimeoutMS: 10000,
   socketTimeoutMS: 45000,

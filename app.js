@@ -31,3 +31,5 @@ initMongoDBConnection()
   .catch((err) => {
     console.error("ACME-Explorer RESTful API could not connect to DB " + err);
   });
+
+export default app;
