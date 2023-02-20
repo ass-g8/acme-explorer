@@ -295,15 +295,12 @@ export async function updateTripSponsorship(req, res) {
 
 // Update status from a sponsorship
 export async function updateTripSponsorshipStatus(req, res) {
-  console.log('hola')
   try {
     // Get trip by id
     const trip = await Trip.findById(req.params.tripId);
-    console.log(trip)
     if (trip) {
       // Get sponsorship by id
       const sponsorship = trip.sponsorships.filter(sponsorship => sponsorship._id.equals(new mongoose.Types.ObjectId(req.params.sponsorshipId)))[0];
-      console.log(sponsorship)
       if (sponsorship) {
         // Get index of sponsorship
         const sponsorshipIndex = trip.sponsorships.indexOf(sponsorship)
