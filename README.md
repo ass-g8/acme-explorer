@@ -25,7 +25,7 @@ BASE_ENDPOINT: `/api/v1`
 
 ### Trips
 
-- `GET /trips`
+- `GET /trips?keyword?minPrice?maxPrice?minDate?maxDate`
 - `POST /trips`
 - `GET /trips/{id}`
 - `PUT /trips/{id}`
@@ -37,18 +37,14 @@ BASE_ENDPOINT: `/api/v1`
 
 ### Application
 
-- `GET /applications`
 - `POST /applications`
 - `GET /applications/{id}`
 - `PATCH /applications/{id}/change-comment`
 - `PATCH /applications/{id}/change-status`
 - `PATCH /applications/{id}/reject`
-
-### Finder
-
-- `GET /finder`
-- `POST /finder`
-- `GET /finder/{id}`
+- `POST /applications/{id}/pay`
+- `GET /applications/explorer/{id}`
+- `GET /applications/trip/{id}`
 
 ### Configuration
 
