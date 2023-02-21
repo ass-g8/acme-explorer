@@ -6,7 +6,7 @@ ACME-Explorer Backend Project
 
 Problem domain models that are implemented in the developed system.
 
-![UML Class Diagram](./docs/uml_acme-explorer_110223.png)
+![UML Class Diagram](./docs/uml_acme-explorer_210223.png)
 
 ## Endpoints
 
@@ -57,4 +57,8 @@ BASE_ENDPOINT: `/api/v1`
 
 ### Dashboard
 
-- ``
+- `GET /dashboard`
+- `POST /dashboard`
+- `GET /dashboard/latest`
+- `POST /api/v1/dashboard/amount-spent-by-explorer`
+- `POST /api/v1/dashboard/explorers-by-amount-spent`

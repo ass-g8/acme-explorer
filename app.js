@@ -8,6 +8,7 @@ import dataWareHouseRoutes from "./api/routes/DataWareHouseRoutes.js";
 import tripRoutes from "./api/routes/TripRoutes.js";
 import initMongoDBConnection from "./api/config/mongoose.js";
 import swagger from "./docs/swagger.js";
+import { initializeDataWarehouseJob } from "./api/services/DataWarehouseServiceProvider.js";
 dotenv.config();
 
 const app = express();
@@ -31,3 +32,5 @@ initMongoDBConnection()
   .catch((err) => {
     console.error("ACME-Explorer RESTful API could not connect to DB " + err);
   });
+
+initializeDataWarehouseJob();
