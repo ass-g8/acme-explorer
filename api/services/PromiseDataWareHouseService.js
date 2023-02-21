@@ -239,9 +239,13 @@ const amountSpentByExplorer = async ({ explorerId, startDate, endDate }) => {
           $sum: "$trip.price"
         }
       }
+    }, {
+      $project: {
+        _id: 0
+      }
     }
   ]);
-  return amountSpentByExplorer;
+  return amountSpentByExplorer[0];
 };
 
 const explorersByAmountSpent = async ({ startDate, endDate, v, theta }) => {

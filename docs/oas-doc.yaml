@@ -122,3 +122,4 @@ components:
     - "./components/schemas/error.yaml"
     - "./components/schemas/validation-error.yaml"
     - "./components/schemas/not-found-error.yaml"
+    - "./components/schemas/datawarehouse.yaml"

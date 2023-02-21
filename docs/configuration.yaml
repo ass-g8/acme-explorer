@@ -18,16 +18,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
-  /api/v1/configurations/{_id}:
+  /api/v1/configurations/{id}:
     put:
       tags:
         - Configurations
-      description: Update a configuration based on its _id
+      description: Update a configuration based on its id
       operationId: updateConfiguration
       parameters:
         - required: true
-          name: _id
-          description: _id of the configuration to update
+          name: id
+          description: id of the configuration to update
           in: path
           schema:
             type: string
