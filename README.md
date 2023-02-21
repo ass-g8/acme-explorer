@@ -50,3 +50,11 @@ BASE_ENDPOINT: `/api/v1`
 
 - `GET /configurations`
 - `PUT /configurations/{id}`
+
+### Dashboard
+
+- `GET /dashboard`
+- `POST /dashboard`
+- `GET /dashboard/latest`
+- `POST /api/v1/dashboard/amount-spent-by-explorer`
+- `POST /api/v1/dashboard/explorers-by-amount-spent`
