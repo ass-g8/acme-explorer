@@ -39,6 +39,8 @@ const dataWareHouseSchema = new mongoose.Schema({
   rebuildPeriod: String
 }, { strict: false });
 
+dataWareHouseSchema.index({ computationMoment: -1 });
+
 const model = mongoose.model("DataWareHouse", dataWareHouseSchema);
 export const schema = model.schema;
 export default model;
