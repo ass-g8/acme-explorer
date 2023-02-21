@@ -29,7 +29,30 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/trip"
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                requirements:
+                  type: array
+                  items: {}
+                startDate:
+                  type: string
+                endDate:
+                  type: string
+                stages:
+                  type: object
+                  properties:
+                    title: 
+                      type: string
+                    description:
+                      type: string
+                    price:
+                      type: number
+                manager_id:
+                  type: string
         description: Trip to be created
         required: true
       responses:
@@ -83,7 +106,28 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/trip"
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                requirements:
+                  type: array
+                  items: {}
+                startDate:
+                  type: string
+                endDate:
+                  type: string
+                stages:
+                  type: object
+                  properties:
+                    title: 
+                      type: string
+                    description:
+                      type: string
+                    price:
+                      type: number
         description: Trip to be updated
         required: true
       responses:
@@ -409,12 +453,3 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
-
-components:
-  $ref:
-    - "./components/schemas/actor.yaml"
-    - "./components/schemas/application.yaml"
-    - "./components/schemas/finder.yaml"
-    - "./components/schemas/trip.yaml"
-    - "./components/schemas/configuration.yaml"
-    - "./components/schemas/error.yaml"

@@ -9,10 +9,9 @@ import {
   rejectApplication,
   payApplication
 } from "../controllers/ApplicationController.js";
-import { creationValidator, statusValidator, commentValidator, rejectValidator } from '../controllers/validators/ApplicationValidator.js';
-import handleExpressValidation from '../middlewares/ValidationHandlingMiddleware.js';
-import { checkApplicationExists, checkInvalidTrip } from '../middlewares/BusinessRulesApplication.js';
-
+import { creationValidator, statusValidator, commentValidator, rejectValidator } from "../controllers/validators/ApplicationValidator.js";
+import { checkApplicationExists, checkInvalidTrip } from "../middlewares/BusinessRulesApplication.js";
+import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
 
 export default function (app) {
   app.route("/api/v1/applications")
@@ -24,14 +23,8 @@ export default function (app) {
       addApplication
     );
 
-  app.route("/api/v1/applications/explorer/:explorerId")
-    .get(findApplicationsByExplorerId)
-
-  app.route("/api/v1/applications/trip/:tripId")
-    .get(findApplicationsByTripId)
-
   app.route("/api/v1/applications/:id")
-    .get(findById)
+    .get(findById);
 
   app.route("/api/v1/applications/:id/change-status")
     .patch(
@@ -55,7 +48,11 @@ export default function (app) {
     );
 
   app.route("/api/v1/applications/:id/pay")
-    .post(
-      payApplication
-    );
+    .post(payApplication);
+
+  app.route("/api/v1/applications/explorer/:explorerId")
+    .get(findApplicationsByExplorerId);
+
+  app.route("/api/v1/applications/trip/:tripId")
+    .get(findApplicationsByTripId);
 }

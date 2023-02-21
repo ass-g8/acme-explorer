@@ -46,12 +46,6 @@ export default function (app) {
   app.route("/api/v1/trips/:id/cancel")
     .patch(cancelTrip);
 
-  app.route("/api/v1/trips/sponsorships/sponsor/:id")
-    .get(findSponsorshipsBySponsorId);
-
-  app.route("/api/v1/trips/sponsorships/:id")
-    .get(getTripSponsorshipById);
-
   app.route("/api/v1/trips/:id/sponsorships")
     .put(addSponsorship);
 
@@ -60,4 +54,10 @@ export default function (app) {
 
   app.route("/api/v1/trips/:tripId/sponsorships/:sponsorshipId/change-status")
     .patch(updateTripSponsorshipStatus);
+
+  app.route("/api/v1/trips/sponsorships/:id")
+    .get(getTripSponsorshipById);
+
+  app.route("/api/v1/trips/sponsorships/sponsor/:id")
+    .get(findSponsorshipsBySponsorId);
 }
