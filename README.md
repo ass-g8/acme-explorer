@@ -38,6 +38,7 @@ BASE_ENDPOINT: `/api/v1`
 - `PATCH /trips/{id}/sponsorships/{id}/change-status`
 - `GET /trips/sponsorships/{id}`
 - `GET /trips/sponsorships/sponsor/{id}`
+- `POST /trips/sponsorships/{id}/pay`
 
 ### Application
 
