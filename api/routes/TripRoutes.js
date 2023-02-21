@@ -12,7 +12,8 @@ import {
   getTripSponsorshipById,
   addSponsorship,
   updateTripSponsorship,
-  updateTripSponsorshipStatus
+  updateTripSponsorshipStatus,
+  paySponsorship
 } from "../controllers/TripController.js";
 import { filterValidator } from "../controllers/validators/FinderValidator.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
@@ -60,4 +61,7 @@ export default function (app) {
 
   app.route("/api/v1/trips/sponsorships/sponsor/:id")
     .get(findSponsorshipsBySponsorId);
+
+  app.route("/api/v1/trips/sponsorships/:id/pay")
+      .post(paySponsorship);
 }

@@ -45,7 +45,7 @@ paths:
                 stages:
                   type: object
                   properties:
-                    title: 
+                    title:
                       type: string
                     description:
                       type: string
@@ -122,7 +122,7 @@ paths:
                 stages:
                   type: object
                   properties:
-                    title: 
+                    title:
                       type: string
                     description:
                       type: string
@@ -447,6 +447,32 @@ paths:
       responses:
         "204":
           description: Trip updated
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /api/v1/trips/sponsorships/{id}/pay:
+    post:
+      tags:
+        - Trips
+      description: Pay a sponsorship based on its id
+      operationId: paySponsorship
+      parameters:
+        - required: true
+          name: id
+          description: id of the sponsorship
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/trip"
         default:
           description: Unexpected error
           content:
