@@ -2,33 +2,36 @@
 import {
   listIndicators,
   lastIndicator,
-  generateIndicators,
-  amountSpentByExplorer,
-  explorersByAmountSpent
+  rebuildPeriod,
+  amountSpentByExplorerController,
+  explorersByAmountSpentController
 } from "../controllers/DataWareHouseController.js";
-import { cube1Validator, cube2Validator } from "../controllers/validators/DataWareHouseValidator.js";
+import {
+  amoutSpentByExplorerValidator,
+  explorersByAmountSpentValidator
+} from "../controllers/validators/DataWareHouseValidator.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
 import { periodDecoder } from "../middlewares/PeriodDecoder.js";
 
 export default function (app) {
   app.route("/api/v1/dashboard")
     .get(listIndicators)
-    .post(generateIndicators);
+    .post(rebuildPeriod);
 
   app.route("/api/v1/dashboard/latest")
     .get(lastIndicator);
 
-  app.route("/api/v1/cube/amountSpentByExplorer")
+  app.route("/api/v1/dashboard/amount-spent-by-explorer")
     .post(
-      cube1Validator,
+      amoutSpentByExplorerValidator,
       handleExpressValidation,
       periodDecoder,
-      amountSpentByExplorer);
+      amountSpentByExplorerController);
 
-  app.route("/api/v1/cube/explorersByAmountSpent")
+  app.route("/api/v1/dashboard/explorers-by-amount-spent")
     .post(
-      cube2Validator,
+      explorersByAmountSpentValidator,
       handleExpressValidation,
       periodDecoder,
-      explorersByAmountSpent);
+      explorersByAmountSpentController);
 }

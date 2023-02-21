@@ -9,4 +9,17 @@ const restartDataWarehouseJob = (period) => {
   return PromiseDataWarehouseService.restartDataWarehouseJob(period);
 };
 
-export { initializeDataWarehouseJob, restartDataWarehouseJob };
+const amountSpentByExplorer = async (params) => {
+  return await PromiseDataWarehouseService.amountSpentByExplorer(params);
+};
+
+const explorersByAmountSpent = async (params) => {
+  return await PromiseDataWarehouseService.explorersByAmountSpent(params);
+};
+
+export {
+  initializeDataWarehouseJob,
+  restartDataWarehouseJob,
+  amountSpentByExplorer,
+  explorersByAmountSpent
+};

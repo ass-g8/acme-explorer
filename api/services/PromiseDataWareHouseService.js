@@ -209,10 +209,7 @@ const computeTopSearchedKeywords = async () => {
   return topSearchedKeywords;
 };
 
-const amountSpentByExplorer = async (req, res) => {
-  const explorerId = req.body.explorer_id;
-  const startDate = req.body.startDate;
-  const endDate = req.body.endDate;
+const amountSpentByExplorer = async ({ explorerId, startDate, endDate }) => {
   const amountSpentByExplorer = await Application.aggregate([
     {
       $match: {
@@ -226,7 +223,7 @@ const amountSpentByExplorer = async (req, res) => {
     }, {
       $lookup: {
         from: "trips",
-        localFiel: "trip_id",
+        localField: "trip_id",
         foreignField: "_id",
         as: "trip"
       }
@@ -244,16 +241,13 @@ const amountSpentByExplorer = async (req, res) => {
       }
     }
   ]);
-  return res.status(200).send(amountSpentByExplorer);
+  return amountSpentByExplorer;
 };
 
-const explorersByAmountSpent = async (req, res) => {
-  const startDate = req.body.startDate;
-  const endDate = req.body.endDate;
-  const v = req.body.v;
+const explorersByAmountSpent = async ({ startDate, endDate, v, theta }) => {
   let operation = {};
 
-  switch (req.body.theta) {
+  switch (theta) {
     case "gt":
       operation = { $gt: v };
       break;
@@ -309,7 +303,7 @@ const explorersByAmountSpent = async (req, res) => {
       }
     }
   ]);
-  return res.status(200).send(explorersByAmountSpent);
+  return explorersByAmountSpent;
 };
 
 export {
