@@ -17,6 +17,7 @@ import {
 import { filterValidator } from "../controllers/validators/FinderValidator.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
 import { addFinder } from "../controllers/FinderController.js";
+import { creationValidator } from "../controllers/validators/TripValidator.js";
 
 export default function (app) {
   app.route("/api/v1/trips")
@@ -26,7 +27,10 @@ export default function (app) {
       addFinder,
       findTrips
     )
-    .post(addTrip);
+    .post(
+      creationValidator,
+      handleExpressValidation,
+      addTrip);
 
   app.route("/api/v1/trips/:id")
     .get(findById)

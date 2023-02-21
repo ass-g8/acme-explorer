@@ -1,24 +1,11 @@
 import { check } from "express-validator";
-
-const _isFloat = async (value) => {
-  try {
-    if (((Number.isInteger(value) && Number(value) % 1 === 0) ||
-      (!Number.isInteger(value) && Number(value) % 1 !== 0)) &&
-      Number(value) >= 0) {
-      return Promise.resolve("Sponsorship flat OK");
-    } else {
-      return Promise.reject(new Error("The sponsorship flat must be greater than zero"));
-    }
-  } catch (err) {
-    return Promise.reject(err);
-  }
-};
+import { isFloat } from "./UtilsValidator.js";
 
 const configurationValidator = [
   check("sponsorshipPrice", "The sponsorship flat must be greater than zero")
     .exists({ checkNull: true, checkFalsy: true })
     .isFloat({ min: 0.0 })
-    .custom(_isFloat),
+    .custom(isFloat),
   check("defaultLanguage", "The languages allowed are Spanish (es) and English (en)")
     .exists({ checkNull: true, checkFalsy: true })
     .isString()
