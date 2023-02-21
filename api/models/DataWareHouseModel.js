@@ -3,7 +3,9 @@ import mongoose from "mongoose";
 
 const dataWareHouseSchema = new mongoose.Schema({
   tripsManagedByManager: [{
-    averageTripsPerManager: Number,
+    averageTripsPerManager: {
+      type: Number
+    },
     minTripsPerManager: Number,
     maxTripsPerManager: Number,
     stdDevTripsPerManager: Number
