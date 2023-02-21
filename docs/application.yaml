@@ -1,7 +1,7 @@
 paths:
   /api/v1/applications:
     post:
-      tags: 
+      tags:
         - Applications
       description: Creates a new application
       operationId: addApplication
@@ -34,7 +34,7 @@ paths:
                 $ref: "#/components/schemas/error"
   /api/v1/applications/explorer/{explorerId}:
     get:
-      tags: 
+      tags:
         - Applications
       description: Returns explorer application groupping by status
       operationId: aggregate
@@ -60,7 +60,7 @@ paths:
                 $ref: "#/components/schemas/error"
   /api/v1/applications/trip/{tripId}:
     get:
-      tags: 
+      tags:
         - Applications
       description: Returns trip application
       operationId: find
@@ -86,7 +86,7 @@ paths:
                 $ref: "#/components/schemas/error"
   /api/v1/applications/{id}:
     get:
-      tags: 
+      tags:
         - Applications
       description: Returns a single application by its id
       operationId: findBy_id
@@ -112,8 +112,8 @@ paths:
                 $ref: "#/components/schemas/error"
   /api/v1/applications/{id}/change-status:
     patch:
-      tags: 
-        - Applications      
+      tags:
+        - Applications
       description: Update an application status based on its id
       operationId: updateApplicationStatus
       parameters:
@@ -130,7 +130,7 @@ paths:
               type: object
               properties:
                 status:
-                  type: string       
+                  type: string
         description: Application to be updated
         required: true
       responses:
@@ -148,8 +148,8 @@ paths:
                 $ref: "#/components/schemas/error"
   /api/v1/applications/{id}/change-comment:
     patch:
-      tags: 
-        - Applications      
+      tags:
+        - Applications
       description: Update an application comment based on its id
       operationId: updateApplicationComment
       parameters:
@@ -166,7 +166,7 @@ paths:
               type: object
               properties:
                 comment:
-                  type: string       
+                  type: string
         description: Application to be updated
         required: true
       responses:
@@ -184,7 +184,7 @@ paths:
                 $ref: "#/components/schemas/error"
   /api/v1/applications/{id}/reject:
     patch:
-      tags: 
+      tags:
         - Applications
       description: Reject an application based on its id
       operationId: rejectApplication
@@ -217,10 +217,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/error" 
-/api/v1/applications/{id}/pay:
+                $ref: "#/components/schemas/error"
+  /api/v1/applications/{id}/pay:
     post:
-      tags: 
+      tags:
         - Applications
       description: Pay an application based on its id
       operationId: payApplication
@@ -243,4 +243,4 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/error" 
+                $ref: "#/components/schemas/error"

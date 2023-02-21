@@ -349,10 +349,6 @@ export async function updateTripSponsorshipStatus(req, res) {
   }
 }
 
-export async function payTrip(req, res) {
-  res.send("Pay trip endpoint");
-}
-
 export async function paySponsorship(req, res) {
-  res.send("Pay sponsorship endpoint");
+  res.status(200).send({ message: "Sponsorship paid" });
 }
