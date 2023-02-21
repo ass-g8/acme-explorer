@@ -30,17 +30,21 @@ BASE_ENDPOINT: `/api/v1`
 - `GET /trips/{id}`
 - `PUT /trips/{id}`
 - `DELETE /trips/{id}`
-- `PATCH /trips/{id}/change-status`
+- `GET /trips/manager/{id}`
+- `PATCH /trips/{id}/publish`
+- `PATCH /trips/{id}/cancel`
 - `PUT /trips/{id}/sponsorships`
+- `PUT /trips/{id}/sponsorships/{id}`
 - `PATCH /trips/{id}/sponsorships/{id}/change-status`
+- `GET /trips/sponsorships/{id}`
 - `GET /trips/sponsorships/sponsor/{id}`
 
 ### Application
 
 - `POST /applications`
 - `GET /applications/{id}`
-- `PATCH /applications/{id}/change-comment`
 - `PATCH /applications/{id}/change-status`
+- `PATCH /applications/{id}/change-comment`
 - `PATCH /applications/{id}/reject`
 - `POST /applications/{id}/pay`
 - `GET /applications/explorer/{id}`
