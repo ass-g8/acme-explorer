@@ -16,12 +16,12 @@ const mongoDBName = process.env.DATABASE_NAME || "ACME-Explorer";
 const mongoDBURI =
   process.env.DATABASE_URI ||
   "mongodb://" +
-    mongoDBCredentials +
-    mongoDBHostname +
-    ":" +
-    mongoDBPort +
-    "/" +
-    mongoDBName;
+  mongoDBCredentials +
+  mongoDBHostname +
+  ":" +
+  mongoDBPort +
+  "/" +
+  mongoDBName;
 const mongoDBOptions = {
   connectTimeoutMS: 10000,
   socketTimeoutMS: 45000,
@@ -35,6 +35,7 @@ const initMongoDBConnection = async () => {
   // by default, you need to set it to false.
   // mongoose.connect(mongoDBURI)
   console.log("Starting database connection...");
+  mongoose.set("strictQuery", false);
   await mongoose.connect(mongoDBURI, mongoDBOptions);
 };
 
