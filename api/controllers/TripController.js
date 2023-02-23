@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Trip from "../models/TripModel.js";
+import { saveResultsToCache } from "../services/CacheService.js";
 
 export async function findById(req, res) {
   try {
@@ -59,19 +60,19 @@ export async function deleteTrip(req, res) {
 function _generateQuery(query) {
   const { keyword, minPrice, maxPrice, minDate, maxDate } = query;
   let finder = {};
-  if(keyword) {
+  if (keyword) {
     finder = { $text: { $search: keyword } };
   }
-  if(minPrice) {
+  if (minPrice) {
     finder = { ...finder, price: { $gte: parseFloat(minPrice) } };
   }
-  if(maxPrice) {
+  if (maxPrice) {
     finder = { ...finder, price: { $lte: parseFloat(maxPrice) } };
   }
-  if(minDate) {
+  if (minDate) {
     finder = { ...finder, startDate: { $gte: minDate } };
   }
-  if(maxDate) {
+  if (maxDate) {
     finder = { ...finder, endDate: { $lte: maxDate } };
   }
   return finder;
@@ -79,9 +80,11 @@ function _generateQuery(query) {
 
 export async function findTrips(req, res) {
   const finder = _generateQuery(req.query);
+  const explorerId = req.query.explorerId;
   try {
     const trips = await Trip.find(finder);
-    res.send(trips);
+    const cache = await saveResultsToCache(explorerId, trips);
+    res.send(cache.results);
   } catch (err) {
     res.status(500).send({
       message: "Unexpected error",

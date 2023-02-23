@@ -1,22 +1,50 @@
 "use strict";
 import Finder from "../models/FinderModel.js";
-import mongoose from "mongoose";
+import Configuration from "../models/ConfigurationModel.js";
+import { getCachedResults } from "../services/CacheService.js";
 
 export async function addFinder(req, res, next) {
   // Explorer id is the logged user
   const { keyword, minPrice, maxPrice, minDate, maxDate } = req.query;
-  const explorer_id = new mongoose.Types.ObjectId("63f1171a29bb798dbb5be030");
+  const { explorerId } = req.query;
   const newFinder = new Finder({
-    keyword,
-    minPrice,
-    maxPrice,
-    minDate,
-    maxDate,
-    explorer_id
+    keyword: keyword ?? null,
+    minPrice: minPrice ?? null,
+    maxPrice: maxPrice ?? null,
+    minDate: minDate ?? null,
+    maxDate: maxDate ?? null,
+    explorer_id: explorerId,
   });
+
   try {
-    await newFinder.save();
-    next();
+    let lastFinder = await Finder.find({ explorer_id: explorerId })
+      .sort("-date")
+      .limit(1);
+    lastFinder = lastFinder[0];
+
+    const isTheSameFinder = (
+      lastFinder.keyword === newFinder.keyword &&
+      lastFinder.minPrice === newFinder.minPrice &&
+      lastFinder.maxPrice === newFinder.maxPrice &&
+      lastFinder.minDate === newFinder.minDate &&
+      lastFinder.maxDate === newFinder.maxDate
+    );
+
+    const lastFinderDate = new Date(lastFinder.date);
+    const configuration = await Configuration.find().limit(1);
+    lastFinderDate.setSeconds(lastFinderDate.getSeconds() + configuration[0].cacheLifeTime);
+    const cachedFinder = new Date() < lastFinderDate;
+
+    if (isTheSameFinder && cachedFinder) {
+      newFinder.date = lastFinder.date;
+      await newFinder.save();
+      console.log("Accessing cached results...");
+      const results = await getCachedResults(explorerId);
+      res.send(results);
+    } else {
+      await newFinder.save();
+      next();
+    }
   } catch (err) {
     if (err.name === "ValidationError") {
       res.status(422).send(err);
