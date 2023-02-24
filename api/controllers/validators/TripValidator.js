@@ -1,5 +1,5 @@
 import { check } from "express-validator";
-import { startDateBeforeEndDate, isFloat } from "./UtilsValidator.js";
+import { startDateBeforeEndDate, endDateBeforeStartDate, isFloat } from "./UtilsValidator.js";
 
 const creationValidator = [
     check("ticker", "Ticker can not be defined")
@@ -87,7 +87,8 @@ const updateValidator = [
     check("endDate")
         .optional()
         .isDate()
-        .isAfter(new Date().toDateString()),
+        .isAfter(new Date().toDateString())
+        .custom(endDateBeforeStartDate),
     check("startDate")
         .optional()
         .isDate()
