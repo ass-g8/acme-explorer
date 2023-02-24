@@ -18,7 +18,7 @@ import {
 import { filterValidator } from "../controllers/validators/FinderValidator.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
 import { addFinder } from "../controllers/FinderController.js";
-import { creationValidator } from "../controllers/validators/TripValidator.js";
+import { creationValidator, updateValidator, cancelValidator } from "../controllers/validators/TripValidator.js";
 import { creationSponsorshipValidator, updateSponsorshipValidator, changeSponsorshipStatusValidator } from "../controllers/validators/SponsorshipValidator.js";
 
 export default function (app) {
@@ -36,7 +36,11 @@ export default function (app) {
 
   app.route("/api/v1/trips/:id")
     .get(findById)
-    .put(updateTrip)
+    .put(
+      updateValidator,
+      handleExpressValidation,
+      updateTrip
+    )
     .delete(deleteTrip);
 
   app.route("/api/v1/trips/manager/:managerId")
@@ -46,7 +50,11 @@ export default function (app) {
     .patch(publishTrip);
 
   app.route("/api/v1/trips/:id/cancel")
-    .patch(cancelTrip);
+    .patch(
+      cancelValidator,
+      handleExpressValidation,
+      cancelTrip
+    );
 
   app.route("/api/v1/trips/:id/sponsorships")
     .put(
