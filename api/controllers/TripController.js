@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import Trip from "../models/TripModel.js";
-import { saveResultsToCache } from "../services/CacheService.js";
+import { saveResultsToCache, getCachedResults } from "../services/CacheService.js";
 
 export async function findById(req, res) {
   try {
@@ -78,18 +78,33 @@ function _generateQuery(query) {
   return finder;
 }
 
+const _findTrips = async (finder, explorerId) => {
+  const trips = await Trip.find({
+    ...finder,
+    status: "PUBLISHED"
+  });
+  const cache = await saveResultsToCache(explorerId, trips);
+  return cache.results;
+};
+
 export async function findTrips(req, res) {
   const finder = _generateQuery(req.query);
   const explorerId = req.query.explorerId;
   try {
-    const trips = await Trip.find(finder);
-    const cache = await saveResultsToCache(explorerId, trips);
-    res.send(cache.results);
+    const trips = req.cachedResults ?
+      await getCachedResults(explorerId) :
+      await _findTrips(finder, explorerId);
+    res.send(trips);
   } catch (err) {
-    res.status(500).send({
-      message: "Unexpected error",
-      err
-    });
+    const trips = await _findTrips(finder, explorerId);
+    if (trips) {
+      res.send(trips);
+    } else {
+      res.status(500).send({
+        message: "Unexpected error finding trips",
+        err
+      });
+    }
   }
 }
 

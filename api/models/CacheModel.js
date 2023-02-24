@@ -14,6 +14,8 @@ const cacheSchema = new mongoose.Schema(
   { strinct: false, timestamps: true }
 );
 
+cacheSchema.index({ explorer_id: 1 });
+
 const model = mongoose.model("Cache", cacheSchema);
 
 export const schema = model.schema;

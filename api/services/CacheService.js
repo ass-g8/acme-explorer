@@ -12,13 +12,17 @@ const getCachedResults = async (explorerId) => {
 
 const saveResultsToCache = async (explorerId, results) => {
   try {
-    const cache = await Cache.findOneAndUpdate(
-      { explorer_id: explorerId },
-      { results },
-      {
-        new: true,
-        upsert: true
+    let cache = await Cache.find({ explorer_id: explorerId });
+    if (cache.length > 0) {
+      cache = cache[0];
+      cache.results = results;
+      cache = await cache.save();
+    } else {
+      cache = await Cache.create({
+        explorer_id: explorerId,
+        results
       });
+    }
     return cache;
   } catch (err) {
     throw new Error("Error caching results: " + err);

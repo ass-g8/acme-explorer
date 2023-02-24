@@ -19,12 +19,14 @@ import { filterValidator } from "../controllers/validators/FinderValidator.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
 import { addFinder } from "../controllers/FinderController.js";
 import { creationValidator } from "../controllers/validators/TripValidator.js";
+import { getLastFinder } from "../middlewares/FinderMiddleware.js";
 
 export default function (app) {
   app.route("/api/v1/trips")
     .get(
       filterValidator,
       handleExpressValidation,
+      getLastFinder,
       addFinder,
       findTrips
     )
@@ -63,5 +65,5 @@ export default function (app) {
     .get(findSponsorshipsBySponsorId);
 
   app.route("/api/v1/trips/sponsorships/:id/pay")
-      .post(paySponsorship);
+    .post(paySponsorship);
 }
