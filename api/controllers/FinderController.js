@@ -4,7 +4,6 @@ import Configuration from "../models/ConfigurationModel.js";
 import { getCachedResults } from "../services/CacheService.js";
 
 export async function addFinder(req, res, next) {
-  // Explorer id is the logged user
   const { keyword, minPrice, maxPrice, minDate, maxDate } = req.query;
   const { explorerId } = req.query;
   const newFinder = new Finder({
@@ -20,7 +19,13 @@ export async function addFinder(req, res, next) {
     let lastFinder = await Finder.find({ explorer_id: explorerId })
       .sort("-date")
       .limit(1);
-    lastFinder = lastFinder[0];
+
+    if (lastFinder.length > 0) {
+      lastFinder = lastFinder[0];
+    } else {
+      await newFinder.save();
+      next();
+    }
 
     const isTheSameFinder = (
       lastFinder.keyword === newFinder.keyword &&
