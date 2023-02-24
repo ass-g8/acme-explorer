@@ -19,6 +19,7 @@ import { filterValidator } from "../controllers/validators/FinderValidator.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
 import { addFinder } from "../controllers/FinderController.js";
 import { creationValidator } from "../controllers/validators/TripValidator.js";
+import { creationSponsorshipValidator, updateSponsorshipValidator, changeSponsorshipStatusValidator } from "../controllers/validators/SponsorshipValidator.js";
 
 export default function (app) {
   app.route("/api/v1/trips")
@@ -48,13 +49,24 @@ export default function (app) {
     .patch(cancelTrip);
 
   app.route("/api/v1/trips/:id/sponsorships")
-    .put(addSponsorship);
+    .put(
+      creationSponsorshipValidator,
+      handleExpressValidation,
+      addSponsorship
+    );
 
   app.route("/api/v1/trips/:tripId/sponsorships/:sponsorshipId")
-    .put(updateTripSponsorship);
+    .put(
+      updateSponsorshipValidator,
+      handleExpressValidation,
+      updateTripSponsorship
+    );
 
   app.route("/api/v1/trips/:tripId/sponsorships/:sponsorshipId/change-status")
-    .patch(updateTripSponsorshipStatus);
+    .patch(
+      changeSponsorshipStatusValidator,
+      handleExpressValidation,
+      updateTripSponsorshipStatus);
 
   app.route("/api/v1/trips/sponsorships/:id")
     .get(getTripSponsorshipById);
@@ -63,5 +75,5 @@ export default function (app) {
     .get(findSponsorshipsBySponsorId);
 
   app.route("/api/v1/trips/sponsorships/:id/pay")
-      .post(paySponsorship);
+    .post(paySponsorship);
 }
