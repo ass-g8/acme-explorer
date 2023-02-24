@@ -58,7 +58,10 @@ const creationValidator = [
         .exists(),
     check("status", "Status can not be defined")
         .not()
-        .exists()
+        .exists(),
+    check("manager_id")
+        .exists({ checkNull: true, checkFalsy: true })
+        .isMongoId(),
 ]
 
 const updateValidator = [
@@ -107,6 +110,9 @@ const updateValidator = [
         .not()
         .exists(),
     check("status", "Status can not be defined")
+        .not()
+        .exists(),
+    check("manager_id")
         .not()
         .exists()
 ]
