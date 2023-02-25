@@ -344,15 +344,9 @@ paths:
             schema:
               type: object
               properties:
-                _id:
-                  type: string
                 banner:
                   type: string
                 landingPage:
-                  type: string
-                amount:
-                  type: number
-                status:
                   type: string
                 sponsor_id:
                   type: string
@@ -392,17 +386,9 @@ paths:
             schema:
               type: object
               properties:
-                _id:
-                  type: string
                 banner:
                   type: string
                 landingPage:
-                  type: string
-                amount:
-                  type: number
-                status:
-                  type: string
-                sponsor_id:
                   type: string
         description: Sponsorship from a trip to be updated
         required: true
