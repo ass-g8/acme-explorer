@@ -173,23 +173,17 @@ export async function cancelTrip(req, res) {
 // Add a sponsorship to a trip
 export async function addStage(req, res) {
   try {
-    const trip = await Trip.findOneAndUpdate(
-      {
-        _id: new mongoose.Types.ObjectId(req.params.id)
-      },
-      {
-        $push: {
-          "stages": {
-            "title": req.body.title,
-            "description": req.body.description,
-            "price": req.body.price
-          }
-        }
-      },
-      {
-        new: true
-      }
-    );
+    const trip = await Trip.findById(req.params.id);
+    const newStage = {
+      "title": req.body.title,
+      "description": req.body.description,
+      "price": req.body.price
+    }
+    trip.stages.push(newStage);
+
+    await trip.save();
+
+    console.log(trip);
 
     if (trip) {
       res.send(trip);
