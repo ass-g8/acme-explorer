@@ -188,6 +188,72 @@ export async function cancelTrip(req, res) {
   }
 }
 
+// Add a sponsorship to a trip
+export async function addStage(req, res) {
+  try {
+    const trip = await Trip.findById(req.params.id);
+    const newStage = {
+      "title": req.body.title,
+      "description": req.body.description,
+      "price": req.body.price
+    }
+    trip.stages.push(newStage);
+
+    await trip.save();
+
+    console.log(trip);
+
+    if (trip) {
+      res.send(trip);
+    } else {
+      res.status(404).send({
+        message: "Trip not found",
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: "Unexpected error",
+      err
+    });
+  }
+}
+
+// Update a stage from a trip
+export async function updateTripStage(req, res) {
+  try {
+    // Get trip by id
+    const trip = await Trip.findById(req.params.tripId);
+    if (trip) {
+      // Get stage by id
+      const stage = trip.stages.filter(stage => stage._id.equals(new mongoose.Types.ObjectId(req.params.stageId)))[0];
+      if (stage) {
+        // Get index of stage
+        const stageIndex = trip.stages.indexOf(stage)
+        // Update and save sponsorship
+        stage.title = req.body.title
+        stage.description = req.body.description
+        stage.price = req.body.price
+        trip.stages[stageIndex] = stage
+        trip.save()
+        res.send(trip);
+      } else {
+        res.status(404).send({
+          message: "Stage not found",
+        });
+      }
+    } else {
+      res.status(404).send({
+        message: "Trip not found",
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: "Unexpected error",
+      err
+    });
+  }
+}
+
 // Returns all the sponsorships of the sponsor passed by parameters
 export async function findSponsorshipsBySponsorId(req, res) {
   try {
@@ -273,7 +339,7 @@ export async function addSponsorship(req, res) {
             // "banner": req.body.banner,
             "landingPage": req.body.landingPage,
             "amount": req.body.amount,
-            "status": req.body.status,
+            "status": "PENDING",
             "sponsor_id": req.body.sponsor_id
           }
         }

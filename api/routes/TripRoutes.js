@@ -8,6 +8,8 @@ import {
   findTripsByManagerId,
   publishTrip,
   cancelTrip,
+  addStage,
+  updateTripStage,
   findSponsorshipsBySponsorId,
   getTripSponsorshipById,
   addSponsorship,
@@ -19,6 +21,9 @@ import { filterValidator } from "../controllers/validators/FinderValidator.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
 import { addFinder } from "../controllers/FinderController.js";
 import { creationValidator } from "../controllers/validators/TripValidator.js";
+import { creationValidator, updateValidator, cancelValidator } from "../controllers/validators/TripValidator.js";
+import { stageValidator } from "../controllers/validators/StageValidator.js"
+import { creationSponsorshipValidator, updateSponsorshipValidator, changeSponsorshipStatusValidator } from "../controllers/validators/SponsorshipValidator.js";
 import { getLastFinder } from "../middlewares/FinderMiddleware.js";
 
 export default function (app) {
@@ -37,7 +42,11 @@ export default function (app) {
 
   app.route("/api/v1/trips/:id")
     .get(findById)
-    .put(updateTrip)
+    .put(
+      updateValidator,
+      handleExpressValidation,
+      updateTrip
+    )
     .delete(deleteTrip);
 
   app.route("/api/v1/trips/manager/:managerId")
@@ -47,16 +56,45 @@ export default function (app) {
     .patch(publishTrip);
 
   app.route("/api/v1/trips/:id/cancel")
-    .patch(cancelTrip);
+    .patch(
+      cancelValidator,
+      handleExpressValidation,
+      cancelTrip
+    );
+
+  app.route("/api/v1/trips/:id/stages")
+    .put(
+      stageValidator,
+      handleExpressValidation,
+      addStage
+    );
+
+  app.route("/api/v1/trips/:tripId/stages/:stageId")
+    .put(
+      stageValidator,
+      handleExpressValidation,
+      updateTripStage
+    );
 
   app.route("/api/v1/trips/:id/sponsorships")
-    .put(addSponsorship);
+    .put(
+      creationSponsorshipValidator,
+      handleExpressValidation,
+      addSponsorship
+    );
 
   app.route("/api/v1/trips/:tripId/sponsorships/:sponsorshipId")
-    .put(updateTripSponsorship);
+    .put(
+      updateSponsorshipValidator,
+      handleExpressValidation,
+      updateTripSponsorship
+    );
 
   app.route("/api/v1/trips/:tripId/sponsorships/:sponsorshipId/change-status")
-    .patch(updateTripSponsorshipStatus);
+    .patch(
+      changeSponsorshipStatusValidator,
+      handleExpressValidation,
+      updateTripSponsorshipStatus);
 
   app.route("/api/v1/trips/sponsorships/:id")
     .get(getTripSponsorshipById);
