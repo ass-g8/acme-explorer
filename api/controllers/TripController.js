@@ -321,7 +321,7 @@ export async function addSponsorship(req, res) {
             // "banner": req.body.banner,
             "landingPage": req.body.landingPage,
             "amount": req.body.amount,
-            "status": req.body.status,
+            "status": "PENDING",
             "sponsor_id": req.body.sponsor_id
           }
         }
