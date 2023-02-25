@@ -10,7 +10,8 @@
     "prestart": "npm install --only=prod",
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "build": "docker build . -t acme-explorer-api-rest:1.0.0 -t acme-explorer-api-rest:latest"
+    "build": "docker build . -t acme-explorer-api-rest:1.0.0 -t acme-explorer-api-rest:latest",
+    "populate": "node --no-warnings populate.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
