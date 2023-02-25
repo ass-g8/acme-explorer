@@ -43,14 +43,16 @@ paths:
                 endDate:
                   type: string
                 stages:
-                  type: object
-                  properties:
-                    title:
-                      type: string
-                    description:
-                      type: string
-                    price:
-                      type: number
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                      description:
+                        type: string
+                      price:
+                        type: number
                 manager_id:
                   type: string
         description: Trip to be created
@@ -119,15 +121,6 @@ paths:
                   type: string
                 endDate:
                   type: string
-                stages:
-                  type: object
-                  properties:
-                    title:
-                      type: string
-                    description:
-                      type: string
-                    price:
-                      type: number
         description: Trip to be updated
         required: true
       responses:
@@ -247,6 +240,84 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
+  /api/v1/trips/{id}/stages:
+    put:
+      tags:
+        - Trips
+      description: Add a stage to a trip
+      operationId: addStage
+      parameters:
+        - required: true
+          name: id
+          description: _id of the trip to update
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+        description: Stage added to trip
+        required: true
+      responses:
+        "204":
+          description: Trip updated
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /api/v1/trips/{tripId}/stages/{stageId}:
+    put:
+      tags:
+        - Trips
+      description: Update a stage from a trip
+      operationId: updateTripStage
+      parameters:
+        - required: true
+          name: tripId
+          description: _id of the trip to update
+          in: path
+          schema:
+            type: string
+        - required: true
+          name: stageId
+          description: _id of the stage to update
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+        description: Stage from a trip to be updated
+        required: true
+      responses:
+        "204":
+          description: Trip updated
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
   /api/v1/trips/sponsorships/sponsor/{id}:
     get:
       tags:
@@ -344,15 +415,9 @@ paths:
             schema:
               type: object
               properties:
-                _id:
-                  type: string
                 banner:
                   type: string
                 landingPage:
-                  type: string
-                amount:
-                  type: number
-                status:
                   type: string
                 sponsor_id:
                   type: string
@@ -392,17 +457,9 @@ paths:
             schema:
               type: object
               properties:
-                _id:
-                  type: string
                 banner:
                   type: string
                 landingPage:
-                  type: string
-                amount:
-                  type: number
-                status:
-                  type: string
-                sponsor_id:
                   type: string
         description: Sponsorship from a trip to be updated
         required: true
