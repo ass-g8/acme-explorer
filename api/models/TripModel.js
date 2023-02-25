@@ -6,7 +6,7 @@ import { schema as sponsorshipSchema } from "./SponsorshipModel.js";
 import { schema as stageSchema } from "./StageModel.js";
 
 const idGenerator = customAlphabet(
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
   4
 );
 
@@ -78,8 +78,10 @@ tripSchema.pre("save", function (callback) {
   const newTrip = this;
   const day = dateFormat(new Date(), "yymmdd");
 
-  const generatedTicker = [day, idGenerator()].join("-");
-  newTrip.ticker = generatedTicker;
+  if (!newTrip.ticker) {
+    const generatedTicker = [day, idGenerator()].join("-");
+    newTrip.ticker = generatedTicker;
+  }
   newTrip.price = newTrip.stages.reduce((acc, stage) => acc + stage.price, 0);
 
   callback();
