@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Trip from "../models/TripModel.js";
+import { saveResultsToCache, getCachedResults } from "../services/CacheService.js";
 
 export async function findById(req, res) {
   try {
@@ -59,34 +60,51 @@ export async function deleteTrip(req, res) {
 function _generateQuery(query) {
   const { keyword, minPrice, maxPrice, minDate, maxDate } = query;
   let finder = {};
-  if(keyword) {
+  if (keyword) {
     finder = { $text: { $search: keyword } };
   }
-  if(minPrice) {
+  if (minPrice) {
     finder = { ...finder, price: { $gte: parseFloat(minPrice) } };
   }
-  if(maxPrice) {
+  if (maxPrice) {
     finder = { ...finder, price: { $lte: parseFloat(maxPrice) } };
   }
-  if(minDate) {
+  if (minDate) {
     finder = { ...finder, startDate: { $gte: minDate } };
   }
-  if(maxDate) {
+  if (maxDate) {
     finder = { ...finder, endDate: { $lte: maxDate } };
   }
   return finder;
 }
 
+const _findTrips = async (finder, explorerId) => {
+  const trips = await Trip.find({
+    ...finder,
+    status: "PUBLISHED"
+  });
+  const cache = await saveResultsToCache(explorerId, trips);
+  return cache.results;
+};
+
 export async function findTrips(req, res) {
   const finder = _generateQuery(req.query);
+  const explorerId = req.query.explorerId;
   try {
-    const trips = await Trip.find(finder);
+    const trips = req.cachedResults ?
+      await getCachedResults(explorerId) :
+      await _findTrips(finder, explorerId);
     res.send(trips);
   } catch (err) {
-    res.status(500).send({
-      message: "Unexpected error",
-      err
-    });
+    const trips = await _findTrips(finder, explorerId);
+    if (trips) {
+      res.send(trips);
+    } else {
+      res.status(500).send({
+        message: "Unexpected error finding trips",
+        err
+      });
+    }
   }
 }
 
