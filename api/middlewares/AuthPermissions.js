@@ -25,7 +25,7 @@ export const verifyUser = (allowedRoles) => {
           } else if (!actor) {
             res.status(401).send({ message: "No actor found with the provided email", error: err });
           } else {
-            if (allowedRoles.includes(actor.role)) {
+            if (allowedRoles.includes(actor.role[0])) {
               next();
             } else {
               res.status(403).send({ message: "The actor has not the required roles", error: err });

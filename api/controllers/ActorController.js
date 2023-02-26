@@ -109,8 +109,7 @@ export async function loginActor(req, res) {
             });
           }
           actor.customToken = customToken;
-          res.set("custom-token", actor.customToken);
-          res.sendStatus(204);
+          res.send(actor);
         }
       });
     }
@@ -165,23 +164,24 @@ export async function updateActorPassword(req, res) {
 
 export async function updateVerifiedActor(req, res) {
   try {
-    Actor.findById(req.params.actorId, async function (err, actor) {
+    Actor.findById(req.params.id, async function (err, actor) {
       if (err) {
         res.send(err);
       } else {
         const idToken = req.headers.idtoken;
-        if (actor.role.includes("ADMINISTRATOR")) {
-          Actor.findOneAndUpdate({ _id: req.params.actorId }, req.body, { new: true }, function (err, actor) {
+        const role = actor.role[0];
+        if (role.includes("ADMINISTRATOR")) {
+          Actor.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, actor) {
             if (err) {
               res.send(err);
             } else {
               res.json(actor);
             }
           });
-        } else if (actor.role.includes("MANAGER") || actor.role.includes("EXPLORER") || actor.role.includes("SPONSOR")) {
+        } else if (role.includes("MANAGER") || role.includes("EXPLORER") || role.includes("SPONSOR")) {
           const authenticatedUserId = await getUserIdToken(idToken);
-          if (authenticatedUserId === req.params.actorId) {
-            Actor.findOneAndUpdate({ _id: req.params.actorId }, req.body, { new: true }, function (err, actor) {
+          if (authenticatedUserId === req.params.id) {
+            Actor.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, actor) {
               if (err) {
                 res.send(err);
               } else {

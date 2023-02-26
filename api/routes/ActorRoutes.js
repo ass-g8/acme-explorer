@@ -58,9 +58,6 @@ export default function (app) {
 
   app.route("/api/v2/actors/:id")
     .put(
-      passwordNotPresent,
-      actorValidator,
-      handleExpressValidation,
       verifyUser(["ADMINISTRATOR", "EXPLORER", "MANAGER", "SPONSOR"]),
       updateVerifiedActor
     );
