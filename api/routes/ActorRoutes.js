@@ -7,7 +7,8 @@ import {
   addActor,
   loginActor,
   banActor,
-  updateActorPassword
+  updateActorPassword,
+  updateVerifiedActor
 } from "../controllers/ActorController.js";
 import {
   actorValidator,
@@ -16,6 +17,7 @@ import {
   passwordNotPresent
 } from "../controllers/validators/ActorValidator.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
+import { verifyUser } from "../middlewares/AuthPermissions.js";
 
 export default function (app) {
   app.route("/api/v1/actors")
@@ -52,5 +54,14 @@ export default function (app) {
       passwordValidator,
       handleExpressValidation,
       updateActorPassword
+    );
+
+  app.route("/api/v2/actors/:id")
+    .put(
+      passwordNotPresent,
+      actorValidator,
+      handleExpressValidation,
+      verifyUser(["ADMINISTRATOR", "EXPLORER", "MANAGER", "SPONSOR"]),
+      updateVerifiedActor
     );
 }

@@ -35,6 +35,9 @@ const actorSchema = new mongoose.Schema(
     customToken: {
       type: String
     },
+    idToken: {
+      type: String
+    },
     preferredLanguage: {
       type: String,
     },
