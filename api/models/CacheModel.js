@@ -15,6 +15,7 @@ const cacheSchema = new mongoose.Schema(
 );
 
 cacheSchema.index({ explorer_id: 1 });
+cacheSchema.index({ updatedAt: 1 }, { expireAfterSeconds: 86401 });
 
 const model = mongoose.model("Cache", cacheSchema);
 

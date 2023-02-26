@@ -72,7 +72,25 @@ const tripSchema = new mongoose.Schema(
   { strict: false }
 );
 
-tripSchema.index({ ticker: "text", title: "text", description: "text" });
+tripSchema.index(
+  { ticker: "text", title: "text", description: "text" },
+  {
+    weights: {
+      ticker: 10,
+      title: 5,
+      description: 1
+    }
+  }
+);
+
+tripSchema.index({ status: 1 });
+tripSchema.index({ price: 1 });
+tripSchema.index({ startDate: 1 });
+tripSchema.index({ endDate: 1 });
+tripSchema.index({ manager_id: 1 });
+tripSchema.index({ "sponsorships.sponsor_id": 1 });
+tripSchema.index({ "sponsorships._id": 1 });
+tripSchema.index({ "stages._id": 1 });
 
 tripSchema.pre("save", function (callback) {
   const newTrip = this;
