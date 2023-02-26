@@ -1,5 +1,6 @@
 "use strict";
 import Actor from "../models/ActorModel.js";
+import admin from "firebase-admin";
 
 export async function findById(req, res) {
   try {
@@ -88,18 +89,31 @@ export async function addActor(req, res) {
 
 export async function loginActor(req, res) {
   const actorCredentials = req.body;
-  try {
-    const actor = await Actor.findOne({ email: actorCredentials.email });
-    actor.verifyPassword(actorCredentials.password, (_err, isMatch) => {
-      if (!isMatch) {
-        res.status(401).send({ message: "Failed login has happened" });
-      } else {
-        res.sendStatus(204);
-      }
-    });
-  } catch (err) {
-    res.status(401).send({ message: "Failed login has happened" });
-  }
+  let customToken;
+  Actor.findOne({ email: actorCredentials.email }, function (_err, actor) {
+    if (!actor || _err) {
+      res.status(401).send({ message: "Failed login has happened" });
+    } else {
+      actor.verifyPassword(actorCredentials.password, async (_err, isMatch) => {
+        if (!isMatch || _err) {
+          res.status(401).send({ message: "Failed login has happened" });
+        } else {
+          try {
+            customToken = await admin.auth().createCustomToken(actor.email);
+          } catch (err) {
+            console.log("Error creating custom token:", err);
+            res.status(500).send({
+              message: "Unexpected error, please try again in a few minutes.",
+              err
+            });
+          }
+          actor.customToken = customToken;
+          res.set("custom-token", actor.customToken);
+          res.sendStatus(204);
+        }
+      });
+    }
+  });
 }
 
 export async function banActor(req, res) {

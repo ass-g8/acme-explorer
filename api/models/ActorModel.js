@@ -32,6 +32,9 @@ const actorSchema = new mongoose.Schema(
       minlength: 5,
       required: "Kindly enter the actor password",
     },
+    customToken: {
+      type: String
+    },
     preferredLanguage: {
       type: String,
     },
