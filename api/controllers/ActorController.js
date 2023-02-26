@@ -8,7 +8,7 @@ export async function findById(req, res) {
       res.send(actor);
     } else {
       res.status(404).send({
-        message: "Actor not found"
+        message: res.__("NOT_FOUND")
       });
     }
   } catch (err) {
