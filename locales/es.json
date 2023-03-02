@@ -1,3 +1,10 @@
 {
-  "NOT_FOUND": "No Encontrado"
+  "ACTOR_NOT_FOUND": "Actor no encontrado",
+  "CONFIGURATION_NOT_FOUND": "Configuración no encontrada",
+  "TRIP_NOT_FOUND": "Viaje no encontrado",
+  "STAGE_NOT_FOUND": "Etapa no encontrada",
+  "SPONSORSHIP_NOT_FOUND": "Patrocinio no encontrado",
+  "NO_SPONSORSHIPS": "El patrocinador no tiene patrocinios",
+  "UNEXPECTED_ERROR": "Error inesperado",
+  "LOGIN_ERROR": "Error al iniciar sesión"
 }

@@ -7,6 +7,7 @@ import { configurationValidator } from "../controllers/validators/ConfigurationV
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
 
 export default function (app) {
+  app.use(i18nConfiguration);
   app.route("/api/v1/configurations")
     .get(getConfiguration);
 

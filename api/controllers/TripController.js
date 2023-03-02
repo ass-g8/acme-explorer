@@ -9,12 +9,12 @@ export async function findById(req, res) {
       res.send(trip);
     } else {
       res.status(404).send({
-        message: "Trip not found"
+        message: res.__("TRIP_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -30,10 +30,15 @@ export async function updateTrip(req, res) {
     if (trip) {
       res.send(trip);
     } else {
-      res.status(404).send("Trip not found");
+      res.status(404).send({
+        message: res.__("TRIP_NOT_FOUND")
+      });
     }
   } catch (err) {
-    res.status(500).send(err);
+    res.status(500).send({
+      message: res.__("UNEXPECTED_ERROR"),
+      err
+    });
   }
 }
 
@@ -46,12 +51,12 @@ export async function deleteTrip(req, res) {
       res.sendStatus(204);
     } else {
       res.status(404).send({
-        message: "Trip not found"
+        message: res.__("TRIP_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -101,7 +106,7 @@ export async function findTrips(req, res) {
       res.send(trips);
     } else {
       res.status(500).send({
-        message: "Unexpected error finding trips",
+        message: res.__("UNEXPECTED_ERROR"),
         err
       });
     }
@@ -115,7 +120,7 @@ export async function addTrip(req, res) {
     res.send(trip);
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -129,7 +134,7 @@ export async function findTripsByManagerId(req, res) {
     res.send(trips);
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -150,12 +155,12 @@ export async function publishTrip(req, res) {
       res.send(trip);
     } else {
       res.status(404).send({
-        message: "Trip not found",
+        message: res.__("TRIP_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -177,12 +182,12 @@ export async function cancelTrip(req, res) {
       res.send(trip);
     } else {
       res.status(404).send({
-        message: "Trip not found",
+        message: res.__("TRIP_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -207,12 +212,12 @@ export async function addStage(req, res) {
       res.send(trip);
     } else {
       res.status(404).send({
-        message: "Trip not found",
+        message: res.__("TRIP_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -238,17 +243,17 @@ export async function updateTripStage(req, res) {
         res.send(trip);
       } else {
         res.status(404).send({
-          message: "Stage not found",
+          message: res.__("STAGE_NOT_FOUND")
         });
       }
     } else {
       res.status(404).send({
-        message: "Trip not found",
+        message: res.__("TRIP_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -276,7 +281,7 @@ export async function findSponsorshipsBySponsorId(req, res) {
 
     if (sponsorshipList.length === 0) {
       res.status(404).send({
-        message: `Sponsor with id ${req.params.id} has no sponsorships`,
+        message: res.__("NO_SPONSORSHIPS")
       });
     } else {
       let sponsorshipsqs = [];
@@ -285,7 +290,7 @@ export async function findSponsorshipsBySponsorId(req, res) {
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -315,12 +320,12 @@ export async function getTripSponsorshipById(req, res) {
       res.send(sponsorship[0].sponsorship)
     } else {
       res.status(404).send({
-        message: "Sponsorship not found",
+        message: res.__("SPONSORSHIP_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -353,12 +358,12 @@ export async function addSponsorship(req, res) {
       res.send(trip);
     } else {
       res.status(404).send({
-        message: "Trip not found",
+        message: res.__("TRIP_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -383,17 +388,17 @@ export async function updateTripSponsorship(req, res) {
         res.send(trip);
       } else {
         res.status(404).send({
-          message: "Sponsorship not found",
+          message: res.__("SPONSORSHIP_NOT_FOUND")
         });
       }
     } else {
       res.status(404).send({
-        message: "Trip not found",
+        message: res.__("TRIP_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -417,17 +422,17 @@ export async function updateTripSponsorshipStatus(req, res) {
         res.send(trip);
       } else {
         res.status(404).send({
-          message: "Sponsorship not found",
+          message: res.__("SPONSORSHIP_NOT_FOUND")
         });
       }
     } else {
       res.status(404).send({
-        message: "Trip not found",
+        message: res.__("TRIP_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }

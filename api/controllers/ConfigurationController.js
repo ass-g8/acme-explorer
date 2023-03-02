@@ -12,12 +12,12 @@ export async function updateConfiguration(req, res) {
       res.send(configuration);
     } else {
       res.status(404).send({
-        message: "Configuration not found"
+        message: res.__("CONFIGURATION_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -29,7 +29,7 @@ export async function getConfiguration(req, res) {
     res.send(configurations[0]);
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }

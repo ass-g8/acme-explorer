@@ -8,12 +8,12 @@ export async function findById(req, res) {
       res.send(actor);
     } else {
       res.status(404).send({
-        message: res.__("NOT_FOUND")
+        message: res.__("ACTOR_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -31,12 +31,12 @@ export async function updateActor(req, res) {
       res.sendStatus(204);
     } else {
       res.status(404).send({
-        message: "Actor not found"
+        message: res.__("ACTOR_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -49,12 +49,12 @@ export async function deleteActor(req, res) {
       res.sendStatus(204);
     } else {
       res.status(404).send({
-        message: "Actor not found"
+        message: res.__("ACTOR_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -66,7 +66,7 @@ export async function getActors(req, res) {
     res.send(actors);
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -80,7 +80,7 @@ export async function addActor(req, res) {
     res.send(actor);
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -92,13 +92,17 @@ export async function loginActor(req, res) {
     const actor = await Actor.findOne({ email: actorCredentials.email });
     actor.verifyPassword(actorCredentials.password, (_err, isMatch) => {
       if (!isMatch) {
-        res.status(401).send({ message: "Failed login has happened" });
+        res.status(401).send({
+          message: res.__("LOGIN_ERROR")
+        });
       } else {
         res.sendStatus(204);
       }
     });
   } catch (err) {
-    res.status(401).send({ message: "Failed login has happened" });
+    res.status(401).send({
+      message: res.__("LOGIN_ERROR")
+    });
   }
 }
 
@@ -114,12 +118,12 @@ export async function banActor(req, res) {
       res.sendStatus(204);
     } else {
       res.status(404).send({
-        message: "Actor not found"
+        message: res.__("ACTOR_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
@@ -137,12 +141,12 @@ export async function updateActorPassword(req, res) {
       res.sendStatus(204);
     } else {
       res.status(404).send({
-        message: "Actor not found"
+        message: res.__("ACTOR_NOT_FOUND")
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Unexpected error",
+      message: res.__("UNEXPECTED_ERROR"),
       err
     });
   }
