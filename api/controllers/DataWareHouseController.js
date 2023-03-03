@@ -107,20 +107,21 @@ const getTopSearchedKeyWords = async (indicator) => {
 const generateReport = async (req, res) => {
   const indicator = req.indicator;
   const ratioChart = await getRatioApplicationsByStatus(indicator);
-  const keywordChart = await getTopSearchedKeyWords(indicator);
-}
+  const barChart = await getTopSearchedKeyWords(indicator);
+  const pdf = await buildPdf({ indicator, ratioChart, barChart });
+};
 
 const buildPdf = async ({ indicator, ratioChart, barChart }) => {
-  const existingPdfBytes = fs.readFileSync("../../assets/plantilla.pdf");
-  const template = existingPdfBytes.toString("base64");
-  const pdfDoc = await PDFDocument.load(template);
-  const pages = pdfDoc.getPages();
-  const page = pages[0];
+  const pdfDoc = await PDFDocument.load(fs.readFileSync("/Users/mrf1989/Projects/acme-explorer/assets/plantilla.pdf"));
+  const page = pdfDoc.getPage(0);
   const { width, height } = page.getSize();
   const ratioChartPng = await pdfDoc.embedPng(ratioChart);
-  const barChartPng = await pdfDoc.embedPage(barChart);
+  const barChartPng = await pdfDoc.embedPng(barChart);
 
-  page.drawImage(ratioChartPng, {});
+  page.drawImage(ratioChartPng, {
+    x: 100,
+    y: 100
+  });
 
   const pdfBytes = await pdfDoc.save();
   fs.writeFileSync("output.pdf", pdfBytes);
