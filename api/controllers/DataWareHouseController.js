@@ -36,8 +36,13 @@ const lastIndicator = async (req, res, next) => {
   }
 };
 
-const getRatioApplicationsByStatus = async (labels, data) => {
-  fetch("https://quickchart.io/chart", {
+const getRatioApplicationsByStatus = async (indicator) => {
+  const labels = []; const data = [];
+  indicator[0].ratioApplicationsByStatus.forEach(dict => {
+    labels.push(dict._id);
+    data.push(dict.applications);
+  });
+  const response = await fetch("https://quickchart.io/chart", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -54,33 +59,55 @@ const getRatioApplicationsByStatus = async (labels, data) => {
         data: {
           labels,
           datasets: [{
-            label: 'Ratio applications by status',
+            label: "Ratio applications by status",
             data
           }]
         }
       }
     }),
-  })
-    .then((response) => response.arrayBuffer())
-    .then((data) => {
-      return data;
-    })
-    .catch((error) => {
-      throw new Error(error);
-    });
+  });
+  const getBuffer = await response.arrayBuffer();
+  return getBuffer;
+}
+
+const getTopSearchedKeyWords = async (indicator) => {
+  const labels = []; const data = [];
+  indicator[0].topSearchedKeywords.forEach(dict => {
+    labels.push(dict._id);
+    data.push(dict.totalSearch);
+  });
+  const response = await fetch("https://quickchart.io/chart", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      "version": "2",
+      "backgroundColor": "transparent",
+      "width": 500,
+      "height": 300,
+      "devicePixelRatio": 1.0,
+      "format": "png",
+      "chart": {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: "Top searched keywords",
+            data
+          }]
+        }
+      }
+    }),
+  });
+  const getBuffer = await response.arrayBuffer();
+  return getBuffer;
 }
 
 const generateReport = async (req, res) => {
   const indicator = req.indicator;
-  const labels = [];
-  const data = [];
-  indicator[0].ratioApplicationsByStatus.forEach(dict => {
-    labels.push(dict._id);
-    data.push(dict.applications);
-  });
-  const ratioChart = await getRatioApplicationsByStatus(labels, data);
-  console.log(ratioChart)
-
+  const ratioChart = await getRatioApplicationsByStatus(indicator);
+  const keywordChart = await getTopSearchedKeyWords(indicator);
 }
 
 const buildPdf = async ({ indicator, ratioChart, barChart }) => {
