@@ -16,17 +16,70 @@ const listIndicators = async (req, res) => {
   }
 };
 
-const lastIndicator = async (req, res) => {
+const lastIndicator = async (req, res, next) => {
+  const type = req.query.type;
   try {
     const indicator = await DataWareHouse.find()
       .sort("-computationMoment")
       .limit(1)
       .exec();
-    res.send(indicator);
+    if (type === "pdf") {
+      req.indicator = indicator;
+      next();
+    } else {
+      res.send(indicator);
+    }
   } catch (err) {
     res.send(err);
   }
 };
+
+const getRatioApplicationsByStatus = async (labels, data) => {
+  fetch("https://quickchart.io/chart", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      "version": "2",
+      "backgroundColor": "transparent",
+      "width": 500,
+      "height": 300,
+      "devicePixelRatio": 1.0,
+      "format": "png",
+      "chart": {
+        type: 'pie',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Ratio applications by status',
+            data
+          }]
+        }
+      }
+    }),
+  })
+    .then((response) => response.arrayBuffer())
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      throw new Error(error);
+    });
+}
+
+const generateReport = async (req, res) => {
+  const indicator = req.indicator;
+  const labels = [];
+  const data = [];
+  indicator[0].ratioApplicationsByStatus.forEach(dict => {
+    labels.push(dict._id);
+    data.push(dict.applications);
+  } );
+  const ratioChart = await getRatioApplicationsByStatus(labels, data);
+  console.log(ratioChart)
+
+}
 
 const rebuildPeriod = (req, res) => {
   console.log("Updating rebuild period. Request: period:" + req.query.rebuildPeriod);
@@ -68,6 +121,7 @@ const explorersByAmountSpentController = async (req, res) => {
 export {
   listIndicators,
   lastIndicator,
+  generateReport,
   rebuildPeriod,
   amountSpentByExplorerController,
   explorersByAmountSpentController

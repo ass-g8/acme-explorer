@@ -20,7 +20,6 @@ import {
 import { filterValidator } from "../controllers/validators/FinderValidator.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
 import { addFinder } from "../controllers/FinderController.js";
-import { creationValidator } from "../controllers/validators/TripValidator.js";
 import { creationValidator, updateValidator, cancelValidator } from "../controllers/validators/TripValidator.js";
 import { stageValidator } from "../controllers/validators/StageValidator.js"
 import { creationSponsorshipValidator, updateSponsorshipValidator, changeSponsorshipStatusValidator } from "../controllers/validators/SponsorshipValidator.js";

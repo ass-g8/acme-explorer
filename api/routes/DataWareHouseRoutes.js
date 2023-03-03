@@ -2,6 +2,7 @@
 import {
   listIndicators,
   lastIndicator,
+  generateReport,
   rebuildPeriod,
   amountSpentByExplorerController,
   explorersByAmountSpentController
@@ -19,7 +20,9 @@ export default function (app) {
     .post(rebuildPeriod);
 
   app.route("/api/v1/dashboard/latest")
-    .get(lastIndicator);
+    .get(
+      lastIndicator,
+      generateReport);
 
   app.route("/api/v1/dashboard/amount-spent-by-explorer")
     .post(
