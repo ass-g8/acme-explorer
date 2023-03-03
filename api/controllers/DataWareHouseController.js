@@ -61,7 +61,20 @@ const getRatioApplicationsByStatus = async (indicator) => {
           labels,
           datasets: [{
             label: "Ratio applications by status",
-            data
+            data,
+            backgroundColor: [
+              "rgba(112, 206, 174, 0.4)",
+              "rgba(255, 92, 98, 0.4)",
+              "rgba(214, 234, 232, 0.4)",
+              "rgba(29, 166, 188, 0.4)"
+            ],
+            borderColor: [
+              "rgba(112, 206, 174)",
+              "rgba(255, 92, 98)",
+              "rgba(214, 234, 232)",
+              "rgba(29, 166, 188)"
+            ],
+            borderWidth: 1
           }]
         }
       }
@@ -95,7 +108,14 @@ const getTopSearchedKeyWords = async (indicator) => {
           labels,
           datasets: [{
             label: "Number of searches",
-            data
+            data,
+            backgroundColor: [
+              "rgba(29, 166, 188, 0.4)"
+            ],
+            borderColor: [
+              "rgba(29, 166, 188)"
+            ],
+            borderWidth: 1
           }]
         }
       }
