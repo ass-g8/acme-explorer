@@ -6,6 +6,8 @@ import {
   amountSpentByExplorer,
   explorersByAmountSpent
 } from "../services/DataWarehouseServiceProvider.js";
+import {resolve} from 'path';
+
 
 const listIndicators = async (req, res) => {
   try {
@@ -112,7 +114,8 @@ const generateReport = async (req, res) => {
 };
 
 const buildPdf = async ({ indicator, ratioChart, barChart }) => {
-  const pdfDoc = await PDFDocument.load(fs.readFileSync("/Users/mrf1989/Projects/acme-explorer/assets/plantilla.pdf"));
+  const pdfPath = resolve('./assets/plantilla.pdf')
+  const pdfDoc = await PDFDocument.load(fs.readFileSync(pdfPath));
   const page = pdfDoc.getPage(0);
   const { width, height } = page.getSize();
   const ratioChartPng = await pdfDoc.embedPng(ratioChart);
