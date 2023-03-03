@@ -130,6 +130,8 @@ const generateReport = async (req, res) => {
   const ratioChart = await getRatioApplicationsByStatus(indicator);
   const barChart = await getTopSearchedKeyWords(indicator);
   const pdf = await buildPdf({ indicator, ratioChart, barChart });
+  res.set('Content-Type', 'application/pdf');
+  res.send(pdf);
 };
 
 const buildPdf = async ({ indicator, ratioChart, barChart }) => {
@@ -223,8 +225,7 @@ const buildPdf = async ({ indicator, ratioChart, barChart }) => {
     y: 338
   });
 
-  const pdfBytes = await pdfDoc.save();
-  fs.writeFileSync("output.pdf", pdfBytes);
+  return await pdfDoc.saveAsBase64({dataUri: true});
 };
 
 const rebuildPeriod = (req, res) => {
