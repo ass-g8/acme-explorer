@@ -1,3 +1,5 @@
+import { PDFDocument } from "pdf-lib";
+import * as fs from "fs";
 import DataWareHouse from "../models/DataWareHouseModel.js";
 import {
   restartDataWarehouseJob,
@@ -75,11 +77,27 @@ const generateReport = async (req, res) => {
   indicator[0].ratioApplicationsByStatus.forEach(dict => {
     labels.push(dict._id);
     data.push(dict.applications);
-  } );
+  });
   const ratioChart = await getRatioApplicationsByStatus(labels, data);
   console.log(ratioChart)
 
 }
+
+const buildPdf = async ({ indicator, ratioChart, barChart }) => {
+  const existingPdfBytes = fs.readFileSync("../../assets/plantilla.pdf");
+  const template = existingPdfBytes.toString("base64");
+  const pdfDoc = await PDFDocument.load(template);
+  const pages = pdfDoc.getPages();
+  const page = pages[0];
+  const { width, height } = page.getSize();
+  const ratioChartPng = await pdfDoc.embedPng(ratioChart);
+  const barChartPng = await pdfDoc.embedPage(barChart);
+
+  page.drawImage(ratioChartPng, {});
+
+  const pdfBytes = await pdfDoc.save();
+  fs.writeFileSync("output.pdf", pdfBytes);
+};
 
 const rebuildPeriod = (req, res) => {
   console.log("Updating rebuild period. Request: period:" + req.query.rebuildPeriod);
