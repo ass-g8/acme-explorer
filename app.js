@@ -10,6 +10,8 @@ import initMongoDBConnection from "./api/config/mongoose.js";
 import swagger from "./docs/swagger.js";
 import admin from "firebase-admin";
 import { initializeDataWarehouseJob } from "./api/services/DataWarehouseServiceProvider.js";
+import { I18n } from "i18n";
+import { i18nConfiguration } from "./api/middlewares/I18nMiddleware.js";
 dotenv.config();
 
 const account = process.env.SERVICE_ACCOUNT || "{}";
@@ -19,9 +21,16 @@ admin.initializeApp({
 });
 
 const app = express();
+const i18n = new I18n({
+  locales: ["es", "en"],
+  directory: "./locales",
+  defaultLocale: "es"
+});
 const port = process.env.PORT || 8080;
+app.use(i18n.init);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(i18nConfiguration);
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, idToken') // ojo, que si metemos un parametro propio por la cabecera hay que declararlo aquí para que no de el error CORS
