@@ -93,7 +93,7 @@ const getTopSearchedKeyWords = async (indicator) => {
         data: {
           labels,
           datasets: [{
-            label: "Top searched keywords",
+            label: "Number of searches",
             data
           }]
         }
@@ -114,13 +114,21 @@ const generateReport = async (req, res) => {
 const buildPdf = async ({ indicator, ratioChart, barChart }) => {
   const pdfDoc = await PDFDocument.load(fs.readFileSync("/Users/mrf1989/Projects/acme-explorer/assets/plantilla.pdf"));
   const page = pdfDoc.getPage(0);
-  const { width, height } = page.getSize();
   const ratioChartPng = await pdfDoc.embedPng(ratioChart);
   const barChartPng = await pdfDoc.embedPng(barChart);
 
   page.drawImage(ratioChartPng, {
-    x: 100,
-    y: 100
+    x: 40,
+    y: 265,
+    width: ratioChartPng.scale(0.5).width,
+    height: ratioChartPng.scale(0.5).height
+  });
+
+  page.drawImage(barChartPng, {
+    x: (page.getWidth() / 2 - ratioChartPng.scale(0.6).width / 2),
+    y: 40,
+    width: ratioChartPng.scale(0.6).width,
+    height: ratioChartPng.scale(0.6).height
   });
 
   const pdfBytes = await pdfDoc.save();
