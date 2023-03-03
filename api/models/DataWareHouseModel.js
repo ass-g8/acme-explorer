@@ -39,7 +39,7 @@ const dataWareHouseSchema = new mongoose.Schema({
   rebuildPeriod: String
 }, { strict: false });
 
-dataWareHouseSchema.index({ computationMoment: -1 });
+dataWareHouseSchema.index({ computationMoment: -1 }, { expireAfterSeconds: 604801 });
 
 const model = mongoose.model("DataWareHouse", dataWareHouseSchema);
 export const schema = model.schema;

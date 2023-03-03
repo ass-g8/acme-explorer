@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import Application from "../models/ApplicationModel.js";
 
-
 export async function findApplicationsByExplorerId(req, res) {
   // explorer_id is the actor_id logged into the system
   const { explorerId } = req.params;

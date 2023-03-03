@@ -8,8 +8,15 @@ import dataWareHouseRoutes from "./api/routes/DataWareHouseRoutes.js";
 import tripRoutes from "./api/routes/TripRoutes.js";
 import initMongoDBConnection from "./api/config/mongoose.js";
 import swagger from "./docs/swagger.js";
+import admin from "firebase-admin";
 import { initializeDataWarehouseJob } from "./api/services/DataWarehouseServiceProvider.js";
 dotenv.config();
+
+const account = process.env.SERVICE_ACCOUNT || "{}";
+const serviceAccount = JSON.parse(account);
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 const app = express();
 const port = process.env.PORT || 8080;

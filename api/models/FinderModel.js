@@ -31,6 +31,9 @@ const finderSchema = new mongoose.Schema({
 }, { strict: false });
 
 finderSchema.index({ explorer_id: 1, date: -1 });
+finderSchema.index({ keyword: 1 });
+finderSchema.index({ minDate: 1 });
+finderSchema.index({ maxDate: 1 });
 
 const model = mongoose.model("Finder", finderSchema);
 
