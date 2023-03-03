@@ -26,7 +26,6 @@ import { creationSponsorshipValidator, updateSponsorshipValidator, changeSponsor
 import { getLastFinder } from "../middlewares/FinderMiddleware.js";
 
 export default function (app) {
-  app.use(i18nConfiguration);
   app.route("/api/v1/trips")
     .get(
       filterValidator,

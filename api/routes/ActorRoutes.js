@@ -16,10 +16,8 @@ import {
   passwordNotPresent
 } from "../controllers/validators/ActorValidator.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
-import { i18nConfiguration } from "../middlewares/I18nMiddleware.js";
 
 export default function (app) {
-  app.use(i18nConfiguration);
   app.route("/api/v1/actors")
     .get(getActors)
     .post(

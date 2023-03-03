@@ -10,6 +10,7 @@ import initMongoDBConnection from "./api/config/mongoose.js";
 import swagger from "./docs/swagger.js";
 import { initializeDataWarehouseJob } from "./api/services/DataWarehouseServiceProvider.js";
 import { I18n } from "i18n";
+import { i18nConfiguration } from "./api/middlewares/I18nMiddleware.js";
 dotenv.config();
 
 const app = express();
@@ -22,6 +23,7 @@ const port = process.env.PORT || 8080;
 app.use(i18n.init);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(i18nConfiguration);
 
 actorRoutes(app);
 applicationRoutes(app);
