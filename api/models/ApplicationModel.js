@@ -42,6 +42,7 @@ const applicationSchema = new mongoose.Schema(
 applicationSchema.index({ explorer_id: 1 });
 applicationSchema.index({ trip_id: 1 });
 applicationSchema.index({ status: 1 });
+applicationSchema.index({ status: 1, paidAt: 1 });
 
 const model = mongoose.model("Application", applicationSchema);
 
