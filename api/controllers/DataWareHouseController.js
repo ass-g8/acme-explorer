@@ -1,4 +1,5 @@
 import { PDFDocument } from "pdf-lib";
+import { resolve } from "path";
 import * as fs from "fs";
 import DataWareHouse from "../models/DataWareHouseModel.js";
 import {
@@ -6,8 +7,6 @@ import {
   amountSpentByExplorer,
   explorersByAmountSpent
 } from "../services/DataWarehouseServiceProvider.js";
-import {resolve} from 'path';
-
 
 const listIndicators = async (req, res) => {
   try {
@@ -50,14 +49,14 @@ const getRatioApplicationsByStatus = async (indicator) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      "version": "2",
-      "backgroundColor": "transparent",
-      "width": 500,
-      "height": 300,
-      "devicePixelRatio": 1.0,
-      "format": "png",
-      "chart": {
-        type: 'pie',
+      version: "2",
+      backgroundColor: "transparent",
+      width: 500,
+      height: 300,
+      devicePixelRatio: 1.0,
+      format: "png",
+      chart: {
+        type: "pie",
         data: {
           labels,
           datasets: [{
@@ -70,7 +69,7 @@ const getRatioApplicationsByStatus = async (indicator) => {
   });
   const getBuffer = await response.arrayBuffer();
   return getBuffer;
-}
+};
 
 const getTopSearchedKeyWords = async (indicator) => {
   const labels = []; const data = [];
@@ -84,14 +83,14 @@ const getTopSearchedKeyWords = async (indicator) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      "version": "2",
-      "backgroundColor": "transparent",
-      "width": 500,
-      "height": 300,
-      "devicePixelRatio": 1.0,
-      "format": "png",
-      "chart": {
-        type: 'bar',
+      version: "2",
+      backgroundColor: "transparent",
+      width: 500,
+      height: 300,
+      devicePixelRatio: 1.0,
+      format: "png",
+      chart: {
+        type: "bar",
         data: {
           labels,
           datasets: [{
@@ -104,7 +103,7 @@ const getTopSearchedKeyWords = async (indicator) => {
   });
   const getBuffer = await response.arrayBuffer();
   return getBuffer;
-}
+};
 
 const generateReport = async (req, res) => {
   const indicator = req.indicator;
@@ -114,7 +113,7 @@ const generateReport = async (req, res) => {
 };
 
 const buildPdf = async ({ indicator, ratioChart, barChart }) => {
-  const pdfPath = resolve('./assets/plantilla.pdf')
+  const pdfPath = resolve("./assets/plantilla.pdf");
   const pdfDoc = await PDFDocument.load(fs.readFileSync(pdfPath));
   const page = pdfDoc.getPage(0);
   const ratioChartPng = await pdfDoc.embedPng(ratioChart);
@@ -132,6 +131,76 @@ const buildPdf = async ({ indicator, ratioChart, barChart }) => {
     y: 40,
     width: ratioChartPng.scale(0.6).width,
     height: ratioChartPng.scale(0.6).height
+  });
+
+  page.drawText(String(indicator[0].tripsManagedByManager[0].averageTripsPerManager), {
+    x: 70,
+    y: 668
+  });
+
+  page.drawText(String(indicator[0].tripsManagedByManager[0].minTripsPerManager), {
+    x: 170,
+    y: 668
+  });
+
+  page.drawText(String(indicator[0].tripsManagedByManager[0].maxTripsPerManager), {
+    x: 270,
+    y: 668
+  });
+
+  page.drawText(String(indicator[0].tripsManagedByManager[0].stdDevTripsPerManager), {
+    x: 372,
+    y: 668
+  });
+
+  page.drawText(String(Number((indicator[0].applicationsPerTrip[0].averageApplicationsPerTrip).toFixed(2))), {
+    x: 70,
+    y: 572
+  });
+
+  page.drawText(String(indicator[0].applicationsPerTrip[0].minApplicationsPerTrip), {
+    x: 170,
+    y: 572
+  });
+
+  page.drawText(String(indicator[0].applicationsPerTrip[0].maxApplicationsPerTrip), {
+    x: 270,
+    y: 572
+  });
+
+  page.drawText(String(Number((indicator[0].applicationsPerTrip[0].stdDevApplicationsPerTrip).toFixed(2))), {
+    x: 372,
+    y: 572
+  });
+
+  page.drawText(String(Number((indicator[0].tripsPrice[0].averagePrice).toFixed(2))), {
+    x: 70,
+    y: 472
+  });
+
+  page.drawText(String(indicator[0].tripsPrice[0].minPrice), {
+    x: 170,
+    y: 472
+  });
+
+  page.drawText(String(indicator[0].tripsPrice[0].maxPrice), {
+    x: 270,
+    y: 472
+  });
+
+  page.drawText(String(Number((indicator[0].tripsPrice[0].stdDevPrice).toFixed(2))), {
+    x: 372,
+    y: 472
+  });
+
+  page.drawText(String(Number((indicator[0].averagePriceRange[0].averageMinPrice).toFixed(2))), {
+    x: 325,
+    y: 338
+  });
+
+  page.drawText(String(Number((indicator[0].averagePriceRange[0].averageMaxPrice).toFixed(2))), {
+    x: 425,
+    y: 338
   });
 
   const pdfBytes = await pdfDoc.save();
