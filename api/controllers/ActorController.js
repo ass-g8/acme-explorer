@@ -1,5 +1,7 @@
 "use strict";
 import Actor from "../models/ActorModel.js";
+import admin from "firebase-admin";
+import { getUserIdToken } from "../middlewares/AuthPermissions.js";
 
 export async function findById(req, res) {
   try {
@@ -88,22 +90,30 @@ export async function addActor(req, res) {
 
 export async function loginActor(req, res) {
   const actorCredentials = req.body;
-  try {
-    const actor = await Actor.findOne({ email: actorCredentials.email });
-    actor.verifyPassword(actorCredentials.password, (_err, isMatch) => {
-      if (!isMatch) {
-        res.status(401).send({
-          message: res.__("LOGIN_ERROR")
-        });
-      } else {
-        res.sendStatus(204);
-      }
-    });
-  } catch (err) {
-    res.status(401).send({
-      message: res.__("LOGIN_ERROR")
-    });
-  }
+  let customToken;
+  Actor.findOne({ email: actorCredentials.email }, function (_err, actor) {
+    if (!actor || _err) {
+      res.status(401).send({ message: res.__("LOGIN_ERROR") });
+    } else {
+      actor.verifyPassword(actorCredentials.password, async (_err, isMatch) => {
+        if (!isMatch || _err) {
+          res.status(401).send({ message: res.__("LOGIN_ERROR") });
+        } else {
+          try {
+            customToken = await admin.auth().createCustomToken(actor.email);
+          } catch (err) {
+            console.log("Error creating custom token:", err);
+            res.status(500).send({
+              message: res.__("UNEXPECTED_ERROR"),
+              err
+            });
+          }
+          actor.customToken = customToken;
+          res.send(actor);
+        }
+      });
+    }
+  });
 }
 
 export async function banActor(req, res) {
@@ -147,6 +157,48 @@ export async function updateActorPassword(req, res) {
   } catch (err) {
     res.status(500).send({
       message: res.__("UNEXPECTED_ERROR"),
+      err
+    });
+  }
+}
+
+export async function updateVerifiedActor(req, res) {
+  try {
+    Actor.findById(req.params.id, async function (err, actor) {
+      if (err) {
+        res.send(err);
+      } else {
+        const idToken = req.headers.idtoken;
+        const role = actor.role[0];
+        if (role.includes("ADMINISTRATOR")) {
+          Actor.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, actor) {
+            if (err) {
+              res.send(err);
+            } else {
+              res.json(actor);
+            }
+          });
+        } else if (role.includes("MANAGER") || role.includes("EXPLORER") || role.includes("SPONSOR")) {
+          const authenticatedUserId = await getUserIdToken(idToken);
+          if (authenticatedUserId === req.params.id) {
+            Actor.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, actor) {
+              if (err) {
+                res.send(err);
+              } else {
+                res.json(actor);
+              }
+            });
+          } else {
+            res.status(403).send("The Actor is trying to update an Actor that is not himself!");
+          }
+        } else {
+          res.status(405).send("The Actor has unidentified roles");
+        }
+      }
+    });
+  } catch (err) {
+    res.status(500).send({
+      message: "Unexpected error",
       err
     });
   }
