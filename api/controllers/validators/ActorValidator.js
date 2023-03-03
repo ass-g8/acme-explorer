@@ -46,7 +46,10 @@ const actorValidator = [
     .escape(),
   check("role").exists({ checkNull: true, checkFalsy: true })
     .isArray()
-    .isIn(["ADMINISTRATOR", "MANAGER", "EXPLORER", "SPONSOR"])
+    .isIn(["ADMINISTRATOR", "MANAGER", "EXPLORER", "SPONSOR"]),
+  check("banned")
+    .not()
+    .exists()
 ];
 
 const passwordValidator = [

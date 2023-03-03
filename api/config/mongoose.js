@@ -16,12 +16,12 @@ const mongoDBName = process.env.DATABASE_NAME || "ACME-Explorer";
 let mongoDBURI =
   process.env.DATABASE_URI ||
   "mongodb://" +
-    mongoDBCredentials +
-    mongoDBHostname +
-    ":" +
-    mongoDBPort +
-    "/" +
-    mongoDBName;
+  mongoDBCredentials +
+  mongoDBHostname +
+  ":" +
+  mongoDBPort +
+  "/" +
+  mongoDBName;
 
 if (process.env.TESTING === "1") {
   mongoDBURI = "mongodb://localhost:27017/test";
@@ -40,6 +40,7 @@ const initMongoDBConnection = async () => {
   // by default, you need to set it to false.
   // mongoose.connect(mongoDBURI)
   console.log("Starting database connection...");
+  mongoose.set("strictQuery", false);
   await mongoose.connect(mongoDBURI, mongoDBOptions);
 };
 

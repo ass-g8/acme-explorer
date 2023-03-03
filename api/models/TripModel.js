@@ -6,7 +6,7 @@ import { schema as sponsorshipSchema } from "./SponsorshipModel.js";
 import { schema as stageSchema } from "./StageModel.js";
 
 const idGenerator = customAlphabet(
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
   4
 );
 
@@ -72,12 +72,34 @@ const tripSchema = new mongoose.Schema(
   { strict: false }
 );
 
+tripSchema.index(
+  { ticker: "text", title: "text", description: "text" },
+  {
+    weights: {
+      ticker: 10,
+      title: 5,
+      description: 1
+    }
+  }
+);
+
+tripSchema.index({ status: 1 });
+tripSchema.index({ price: 1 });
+tripSchema.index({ startDate: 1 });
+tripSchema.index({ endDate: 1 });
+tripSchema.index({ manager_id: 1 });
+tripSchema.index({ "sponsorships.sponsor_id": 1 });
+tripSchema.index({ "sponsorships._id": 1 });
+tripSchema.index({ "stages._id": 1 });
+
 tripSchema.pre("save", function (callback) {
   const newTrip = this;
   const day = dateFormat(new Date(), "yymmdd");
 
-  const generatedTicker = [day, idGenerator()].join("-");
-  newTrip.ticker = generatedTicker;
+  if (!newTrip.ticker) {
+    const generatedTicker = [day, idGenerator()].join("-");
+    newTrip.ticker = generatedTicker;
+  }
   newTrip.price = newTrip.stages.reduce((acc, stage) => acc + stage.price, 0);
 
   callback();

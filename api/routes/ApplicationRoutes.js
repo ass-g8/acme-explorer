@@ -1,26 +1,58 @@
 "use-strict";
 import {
-  getApplication,
+  findApplicationsByExplorerId,
+  findApplicationsByTripId,
   findById,
-  updateApplication,
-  deleteApplication,
   addApplication,
   updateApplicationStatus,
+  updateApplicationComment,
+  rejectApplication,
+  payApplication
 } from "../controllers/ApplicationController.js";
-// import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
+import { creationValidator, statusValidator, commentValidator, rejectValidator } from "../controllers/validators/ApplicationValidator.js";
+import { checkApplicationExists, checkInvalidTrip } from "../middlewares/BusinessRulesApplication.js";
+import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
 
 export default function (app) {
   app.route("/api/v1/applications")
-    .get(getApplication)
-    .post(addApplication);
+    .post(
+      creationValidator,
+      handleExpressValidation,
+      checkApplicationExists,
+      checkInvalidTrip,
+      addApplication
+    );
 
   app.route("/api/v1/applications/:id")
-    .get(findById)
-    .put(updateApplication)
-    .delete(deleteApplication);
+    .get(findById);
 
   app.route("/api/v1/applications/:id/change-status")
-    .patch(updateApplicationStatus);
-  // app.route("/api/v1/applications/:id/change-comment");
-  // app.route("/api/v1/applications/:id/reject");
+    .patch(
+      statusValidator,
+      handleExpressValidation,
+      updateApplicationStatus
+    );
+
+  app.route("/api/v1/applications/:id/change-comment")
+    .patch(
+      commentValidator,
+      handleExpressValidation,
+      updateApplicationComment
+    );
+
+  app.route("/api/v1/applications/:id/reject")
+    .patch(
+      rejectValidator,
+      handleExpressValidation,
+      rejectApplication
+    );
+
+  app.route("/api/v1/applications/:id/pay")
+    .post(payApplication);
+
+  app.route("/api/v1/applications/explorer/:explorerId")
+    .get(findApplicationsByExplorerId);
+
+  app.route("/api/v1/applications/trip/:tripId")
+    .get(findApplicationsByTripId);
 }

@@ -13,14 +13,15 @@ const finderSchema = new mongoose.Schema({
     type: Number,
     min: 0.0
   },
-  startDate: {
+  minDate: {
     type: Date,
   },
-  endDate: {
+  maxDate: {
     type: Date,
   },
   date: {
     type: Date,
+    default: Date.now
   },
   explorer_id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -28,6 +29,11 @@ const finderSchema = new mongoose.Schema({
     required: "Finder explorer required"
   },
 }, { strict: false });
+
+finderSchema.index({ explorer_id: 1, date: -1 });
+finderSchema.index({ keyword: 1 });
+finderSchema.index({ minDate: 1 });
+finderSchema.index({ maxDate: 1 });
 
 const model = mongoose.model("Finder", finderSchema);
 
