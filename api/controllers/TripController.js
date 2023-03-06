@@ -96,21 +96,30 @@ const _findTrips = async (finder, explorerId) => {
 export async function findTrips(req, res) {
   const finder = _generateQuery(req.query);
   const explorerId = req.query.explorerId;
-  try {
-    const trips = req.cachedResults ?
-      await getCachedResults(explorerId) :
-      await _findTrips(finder, explorerId);
-    res.send(trips);
-  } catch (err) {
-    const trips = await _findTrips(finder, explorerId);
-    if (trips) {
+  if (explorerId) {
+    try {
+      const trips = req.cachedResults ?
+        await getCachedResults(explorerId) :
+        await _findTrips(finder, explorerId);
       res.send(trips);
-    } else {
-      res.status(500).send({
-        message: res.__("UNEXPECTED_ERROR"),
-        err
-      });
+    } catch (err) {
+      const trips = await _findTrips(finder, explorerId);
+      if (trips) {
+        res.send(trips);
+      } else {
+        res.status(500).send({
+          message: res.__("UNEXPECTED_ERROR"),
+          err
+        });
+      }
     }
+  } else {
+    const trips = await Trip.find({
+      ...finder,
+      status: "PUBLISHED"
+    });
+
+    res.send(trips);
   }
 }
 
