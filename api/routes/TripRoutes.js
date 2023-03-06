@@ -24,6 +24,7 @@ import { creationValidator, updateValidator, cancelValidator } from "../controll
 import { stageValidator } from "../controllers/validators/StageValidator.js";
 import { creationSponsorshipValidator, updateSponsorshipValidator, changeSponsorshipStatusValidator } from "../controllers/validators/SponsorshipValidator.js";
 import { getLastFinder } from "../middlewares/FinderMiddleware.js";
+import { checkTripPublished, checkCancelableTrip } from "../middlewares/BusinessRulesTrip.js";
 
 export default function (app) {
   app.route("/api/v1/trips")
@@ -44,9 +45,12 @@ export default function (app) {
     .put(
       updateValidator,
       handleExpressValidation,
+      checkTripPublished,
       updateTrip
     )
-    .delete(deleteTrip);
+    .delete(
+      checkTripPublished,
+      deleteTrip);
 
   app.route("/api/v1/trips/manager/:managerId")
     .get(findTripsByManagerId);
@@ -58,6 +62,7 @@ export default function (app) {
     .patch(
       cancelValidator,
       handleExpressValidation,
+      checkCancelableTrip,
       cancelTrip
     );
 
