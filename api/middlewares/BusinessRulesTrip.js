@@ -18,7 +18,7 @@ export const checkCancelableTrip = async (req, res, next) => {
         res.status(400).send({
             message: res.__("UNPUBLISHED_TRIP")
         });
-    } else if (trip.startDate <= new Date.now()) {
+    } else if (trip.startDate <= Date.now()) {
         res.status(400).send({
             message: res.__("TRIP_STARTED")
         });
