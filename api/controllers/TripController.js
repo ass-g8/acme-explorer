@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Trip from "../models/TripModel.js";
 import { saveResultsToCache, getCachedResults } from "../services/CacheService.js";
+import Configuration from "../models/ConfigurationModel.js";
 
 export async function findById(req, res) {
   try {
@@ -334,6 +335,7 @@ export async function getTripSponsorshipById(req, res) {
 // Add a sponsorship to a trip
 export async function addSponsorship(req, res) {
   try {
+    const configurations = await Configuration.find({});
     const trip = await Trip.findOneAndUpdate(
       {
         _id: new mongoose.Types.ObjectId(req.params.id)
@@ -343,7 +345,7 @@ export async function addSponsorship(req, res) {
           "sponsorships": {
             // "banner": req.body.banner,
             "landingPage": req.body.landingPage,
-            "amount": req.body.amount,
+            "amount": configurations[0].sponsorshipPrice,
             "status": "PENDING",
             "sponsor_id": req.body.sponsor_id
           }
