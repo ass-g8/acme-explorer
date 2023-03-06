@@ -12,6 +12,7 @@ import {
 import { creationValidator, statusValidator, commentValidator, rejectValidator } from "../controllers/validators/ApplicationValidator.js";
 import { checkApplicationExists, checkInvalidTrip } from "../middlewares/BusinessRulesApplication.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
+import { verifyUser } from "../middlewares/AuthPermissions.js";
 
 export default function (app) {
   app.route("/api/v1/applications")
@@ -55,4 +56,56 @@ export default function (app) {
 
   app.route("/api/v1/applications/trip/:tripId")
     .get(findApplicationsByTripId);
+
+  app.route("/api/v2/applications")
+    .post(
+      verifyUser(["EXPLORER"]),
+      creationValidator,
+      handleExpressValidation,
+      checkApplicationExists,
+      checkInvalidTrip,
+      addApplication
+    );
+
+  app.route("/api/v2/applications/:id")
+    .get(
+      verifyUser(["MANAGER", "EXPLORER"]),
+      findById
+    );
+
+  app.route("/api/v2/applications/:id/change-status")
+    .patch(
+      verifyUser(["MANAGER", "EXPLORER"]),
+      statusValidator,
+      handleExpressValidation,
+      updateApplicationStatus
+    );
+
+  app.route("/api/v2/applications/:id/change-comment")
+    .patch(
+      verifyUser(["EXPLORER"]),
+      commentValidator,
+      handleExpressValidation,
+      updateApplicationComment
+    );
+
+  app.route("/api/v2/applications/:id/reject")
+    .patch(
+      verifyUser(["MANAGER"]),
+      rejectValidator,
+      handleExpressValidation,
+      rejectApplication
+    );
+
+  app.route("/api/v2/applications/explorer/:explorerId")
+    .get(
+      verifyUser(["EXPLORER"]),
+      findApplicationsByExplorerId
+    );
+
+  app.route("/api/v2/applications/trip/:tripId")
+    .get(
+      verifyUser(["MANAGER"]),
+      findApplicationsByTripId
+    );
 }
