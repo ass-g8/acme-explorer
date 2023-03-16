@@ -407,7 +407,7 @@ export async function updateTripSponsorship(req, res) {
 }
 
 // Update status from a sponsorship
-export async function deleteTripSponsorshipLogically(req, res) {
+export async function updateTripSponsorshipStatus(req, res) {
   try {
     // Get trip by id
     const trip = await Trip.findById(req.params.tripId);
@@ -418,7 +418,7 @@ export async function deleteTripSponsorshipLogically(req, res) {
         // Get index of sponsorship
         const sponsorshipIndex = trip.sponsorships.indexOf(sponsorship)
         // Update and save sponsorship
-        sponsorship.status = "CANCELLED"
+        sponsorship.status = req.body.status
         trip.sponsorships[sponsorshipIndex] = sponsorship
         trip.save()
         res.send(trip);
