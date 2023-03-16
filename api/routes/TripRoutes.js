@@ -25,6 +25,7 @@ import { stageValidator } from "../controllers/validators/StageValidator.js";
 import { creationSponsorshipValidator, updateSponsorshipValidator, changeSponsorshipStatusValidator } from "../controllers/validators/SponsorshipValidator.js";
 import { getLastFinder } from "../middlewares/FinderMiddleware.js";
 import { checkTripPublished, checkCancelableTrip } from "../middlewares/BusinessRulesTrip.js";
+import { verifyUser } from "../middlewares/AuthPermissions.js";
 
 export default function (app) {
   app.route("/api/v1/trips")
@@ -108,4 +109,62 @@ export default function (app) {
 
   app.route("/api/v1/trips/sponsorships/:id/pay")
     .post(paySponsorship);
+
+  app.route("/api/v2/trips")
+    .post(
+      verifyUser(["MANAGER"]),
+      creationValidator,
+      handleExpressValidation,
+      addTrip
+    );
+
+  app.route("/api/v2/trips/:id")
+    .put(
+      verifyUser(["MANAGER"]),
+      updateValidator,
+      handleExpressValidation,
+      checkTripPublished,
+      updateTrip
+    )
+    .delete(
+      verifyUser(["MANAGER"]),
+      checkTripPublished,
+      deleteTrip);
+
+  app.route("/api/v2/trips/manager/:managerId")
+    .get(
+      verifyUser(["MANAGER"]),
+      findTripsByManagerId
+    );
+
+  app.route("/api/v2/trips/:id/publish")
+    .patch(
+      verifyUser(["MANAGER"]),
+      publishTrip
+    );
+
+  app.route("/api/v2/trips/:id/cancel")
+    .patch(
+      verifyUser(["MANAGER"]),
+      cancelValidator,
+      handleExpressValidation,
+      checkCancelableTrip,
+      cancelTrip
+    );
+
+  app.route("/api/v2/trips/:id/stages")
+    .put(
+      verifyUser(["MANAGER"]),
+      stageValidator,
+      handleExpressValidation,
+      addStage
+    );
+
+  app.route("/api/v2/trips/:tripId/stages/:stageId")
+    .put(
+      verifyUser(["MANAGER"]),
+      stageValidator,
+      handleExpressValidation,
+      updateTripStage
+    );
 }
