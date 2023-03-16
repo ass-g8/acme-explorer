@@ -1,8 +1,8 @@
 import { describe, it, before, after } from "mocha";
 import { assert } from "chai";
 import * as bcrypt from "bcrypt";
-import Actor from "../api/models/ActorModel.js";
-import initMongoDBConnection from "../api/config/mongoose.js";
+import Actor from "../../api/models/ActorModel.js";
+import initMongoDBConnection from "../../api/config/mongoose.js";
 import mongoose from "mongoose";
 
 const actor = new Actor({

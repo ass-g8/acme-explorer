@@ -23,7 +23,8 @@ let mongoDBURI =
   "/" +
   mongoDBName;
 
-if (process.env.TESTING === "1") {
+if (process.env.NODE_ENV === "testing") {
+  console.log("💾 Connecting to test database: mongodb://localhost:27017/test");
   mongoDBURI = "mongodb://localhost:27017/test";
 }
 

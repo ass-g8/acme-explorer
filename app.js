@@ -32,11 +32,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(i18nConfiguration);
 app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, idToken') // ojo, que si metemos un parametro propio por la cabecera hay que declararlo aquí para que no de el error CORS
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS')
-  next()
-})
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, idToken");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,PATCH,OPTIONS");
+  next();
+});
 
 actorRoutes(app);
 applicationRoutes(app);
@@ -55,5 +55,8 @@ initMongoDBConnection()
     console.error("ACME-Explorer RESTful API could not connect to DB " + err);
   });
 
-initializeDataWarehouseJob();
+if (process.env.NODE_ENV !== "testing") {
+  initializeDataWarehouseJob();
+}
+
 export default app;
