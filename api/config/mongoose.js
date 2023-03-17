@@ -23,11 +23,6 @@ let mongoDBURI =
   "/" +
   mongoDBName;
 
-if (process.env.NODE_ENV === "testing") {
-  console.log("💾 Connecting to test database: mongodb://localhost:27017/test");
-  mongoDBURI = "mongodb://localhost:27017/test";
-}
-
 const mongoDBOptions = {
   connectTimeoutMS: 10000,
   socketTimeoutMS: 45000,
@@ -40,9 +35,14 @@ const initMongoDBConnection = async () => {
   // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
   // by default, you need to set it to false.
   // mongoose.connect(mongoDBURI)
+  if (process.env.NODE_ENV === "testing") {
+    console.log("💾 Connecting to test database: mongodb://localhost:27017/test");
+    mongoDBURI = "mongodb://localhost:27017/test";
+  }
   console.log("Starting database connection...");
   mongoose.set("strictQuery", false);
   await mongoose.connect(mongoDBURI, mongoDBOptions);
+  console.log("Successful database connection!");
 };
 
 export default initMongoDBConnection;

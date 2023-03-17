@@ -11,28 +11,25 @@ chai.use(chaiHttp);
 
 describe("Actor Controller test", () => {
   it("GET /actor", (done) => {
-    const stub = sinon.stub(Actor, "find").returns(JSON.stringify([{ users: [] }]));
+    const stub = sinon.stub(Actor, "find").returns(Promise.resolve([{ users: [] }]));
     chai.request(app)
       .get("/api/v1/actors")
-      .end((err, res) => {
-        console.log("STUB", stub.calledOnce);
+      .end((_err, res) => {
         expect(stub.calledOnce).to.be.true;
         expect(res).to.have.status(200);
         expect("Content-Type", /json/);
-        if (err) done(err);
-        else done();
+        done();
       });
   });
 
   it("GET /actor with 404 error", () => {
-    const stub = sinon.stub(Actor, "find").returns(undefined);
+    const stub = sinon.stub(Actor, "find").returns(Promise.resolve(undefined));
     chai.request(app)
-      .get("/api/v1/actors")
-      .end((err, res) => {
+      .get("/api/v1/actors/641446af75a2718e86b235c3")
+      .end((_err, res) => {
         expect(stub.calledOnce).to.be.true;
         expect(res).to.have.status(404);
-        if (err) done(err);
-        else done();
+        done();
       });
   });
 

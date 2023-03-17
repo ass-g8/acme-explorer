@@ -45,18 +45,22 @@ dataWareHouseRoutes(app);
 tripRoutes(app);
 swagger(app);
 
-initMongoDBConnection()
-  .then(() => {
-    app.listen(port, function () {
-      console.log("ACME-Explorer RESTful API server started on: " + port);
-    });
-  })
-  .catch((err) => {
-    console.error("ACME-Explorer RESTful API could not connect to DB " + err);
-  });
-
 if (process.env.NODE_ENV !== "testing") {
+  initMongoDBConnection()
+    .then(() => {
+      app.listen(port, function () {
+        console.log("ACME-Explorer RESTful API server started on: " + port);
+      });
+    })
+    .catch((err) => {
+      console.error("ACME-Explorer RESTful API could not connect to DB " + err);
+    });
+
   initializeDataWarehouseJob();
+} else {
+  app.listen(port, function () {
+    console.log("ACME-Explorer RESTful API server started on: " + port);
+  });
 }
 
 export default app;
