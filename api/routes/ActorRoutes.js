@@ -56,9 +56,51 @@ export default function (app) {
       updateActorPassword
     );
 
+  app.route("/api/v2/actors")
+    .get(
+      verifyUser(["ADMINISTRATOR"]),
+      getActors)
+    .post(
+      verifyUser(["ADMINISTRATOR", "EXPLORER"]),
+      actorValidator,
+      passwordValidator,
+      handleExpressValidation,
+      addActor
+    );
+
+  app.route("/api/v2/actors/login")
+    .post(
+      verifyUser(["ADMINISTRATOR", "EXPLORER", "MANAGER", "SPONSOR"]),
+      loginActor);
+
   app.route("/api/v2/actors/:id")
+    .get(
+      verifyUser(["ADMINISTRATOR", "EXPLORER", "MANAGER", "SPONSOR"]),
+      findById)
     .put(
       verifyUser(["ADMINISTRATOR", "EXPLORER", "MANAGER", "SPONSOR"]),
-      updateVerifiedActor
+      passwordNotPresent,
+      actorValidator,
+      handleExpressValidation,
+      updateActor
+    )
+    .delete(
+      verifyUser(["ADMINISTRATOR"]),
+      deleteActor);
+
+  app.route("/api/v2/actors/:id/ban")
+    .patch(
+      verifyUser(["ADMINISTRATOR"]),
+      banValidator,
+      handleExpressValidation,
+      banActor
+    );
+
+  app.route("/api/v2/actors/:id/update-password")
+    .patch(
+      verifyUser(["ADMINISTRATOR", "EXPLORER", "MANAGER", "SPONSOR"]),
+      passwordValidator,
+      handleExpressValidation,
+      updateActorPassword
     );
 }
