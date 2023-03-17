@@ -107,7 +107,7 @@ export default function (app) {
   app.route("/api/v1/trips/sponsorships/sponsor/:id")
     .get(findSponsorshipsBySponsorId);
 
-  app.route("/api/v1/trips/sponsorships/:id/pay")
+  app.route("/api/v1/trips/:tripId/sponsorships/:sponsorshipId/pay")
     .post(paySponsorship);
 
   app.route("/api/v2/trips")

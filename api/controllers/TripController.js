@@ -450,5 +450,34 @@ export async function updateTripSponsorshipStatus(req, res) {
 }
 
 export async function paySponsorship(req, res) {
-  res.status(200).send({ message: "Sponsorship paid" });
+  try {
+    // Get trip by id
+    const trip = await Trip.findById(req.params.tripId);
+    if (trip) {
+      // Get sponsorship by id
+      const sponsorship = trip.sponsorships.filter(sponsorship => sponsorship._id.equals(new mongoose.Types.ObjectId(req.params.sponsorshipId)))[0];
+      if (sponsorship) {
+        // Get index of sponsorship
+        const sponsorshipIndex = trip.sponsorships.indexOf(sponsorship)
+        // Update and save sponsorship
+        sponsorship.status = 'ACCEPTED'
+        trip.sponsorships[sponsorshipIndex] = sponsorship
+        trip.save()
+        res.send(trip);
+      } else {
+        res.status(404).send({
+          message: res.__("SPONSORSHIP_NOT_FOUND")
+        });
+      }
+    } else {
+      res.status(404).send({
+        message: res.__("TRIP_NOT_FOUND")
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: res.__("UNEXPECTED_ERROR"),
+      err
+    });
+  }
 }

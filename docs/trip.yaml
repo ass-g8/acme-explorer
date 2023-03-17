@@ -510,7 +510,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
-  /api/v1/trips/sponsorships/{id}/pay:
+  /api/v1/trips/{tripId}/sponsorships/{sponsorshipId}/pay:
     post:
       tags:
         - Trips
@@ -518,8 +518,14 @@ paths:
       operationId: paySponsorship
       parameters:
         - required: true
-          name: id
-          description: id of the sponsorship
+          name: tripId
+          description: _id of the trip to update
+          in: path
+          schema:
+            type: string
+        - required: true
+          name: sponsorshipId
+          description: _id of the sponsorship to update
           in: path
           schema:
             type: string
