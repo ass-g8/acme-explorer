@@ -14,7 +14,7 @@ import {
   getTripSponsorshipById,
   addSponsorship,
   updateTripSponsorship,
-  updateTripSponsorshipStatus,
+  deleteTripSponsorshipLogically,
   paySponsorship
 } from "../controllers/TripController.js";
 import { filterValidator } from "../controllers/validators/FinderValidator.js";
@@ -22,7 +22,7 @@ import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware
 import { addFinder } from "../controllers/FinderController.js";
 import { creationValidator, updateValidator, cancelValidator } from "../controllers/validators/TripValidator.js";
 import { stageValidator } from "../controllers/validators/StageValidator.js";
-import { creationSponsorshipValidator, updateSponsorshipValidator, changeSponsorshipStatusValidator } from "../controllers/validators/SponsorshipValidator.js";
+import { creationSponsorshipValidator, updateSponsorshipValidator } from "../controllers/validators/SponsorshipValidator.js";
 import { getLastFinder } from "../middlewares/FinderMiddleware.js";
 import { checkTripPublished, checkCancelableTrip } from "../middlewares/BusinessRulesTrip.js";
 import { verifyUser } from "../middlewares/permissions/AuthPermissions.js";
@@ -95,11 +95,8 @@ export default function (app) {
       updateTripSponsorship
     );
 
-  app.route("/api/v1/trips/:tripId/sponsorships/:sponsorshipId/change-status")
-    .patch(
-      changeSponsorshipStatusValidator,
-      handleExpressValidation,
-      updateTripSponsorshipStatus);
+  app.route("/api/v1/trips/:tripId/sponsorships/:sponsorshipId")
+    .patch(deleteTripSponsorshipLogically);
 
   app.route("/api/v1/trips/sponsorships/:id")
     .get(getTripSponsorshipById);
@@ -166,5 +163,33 @@ export default function (app) {
       stageValidator,
       handleExpressValidation,
       updateTripStage
+    );
+
+  app.route("/api/v2/trips/:id/sponsorships")
+    .put(
+      verifyUser(["SPONSOR"]),
+      creationSponsorshipValidator,
+      handleExpressValidation,
+      addSponsorship
+    );
+
+  app.route("/api/v2/trips/:tripId/sponsorships/:sponsorshipId")
+    .put(
+      verifyUser(["SPONSOR"]),
+      updateSponsorshipValidator,
+      handleExpressValidation,
+      updateTripSponsorship
+    );
+
+    app.route("/api/v2/trips/:tripId/sponsorships/:sponsorshipId")
+    .patch(
+      verifyUser(["SPONSOR"]),
+      deleteTripSponsorshipLogically
+    );
+
+  app.route("/api/v2/trips/:tripId/sponsorships/:sponsorshipId/pay")
+    .post(
+      verifyUser(["SPONSOR"]),
+      paySponsorship
     );
 }
