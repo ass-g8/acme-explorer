@@ -472,12 +472,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
-  /api/v1/trips/{tripId}/sponsorships/{sponsorshipId}/change-status:
     patch:
       tags:
         - Trips
-      description: Update status from a sponsorship
-      operationId: updateTripSponsorshipStatus
+      description: Logical remove of sponsorship
+      operationId: deleteTripSponsorshipLogically
       parameters:
         - required: true
           name: tripId
@@ -487,20 +486,10 @@ paths:
             type: string
         - required: true
           name: sponsorshipId
-          description: _id of the sponsorship to update
+          description: _id of the sponsorship to delete logically
           in: path
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                status:
-                  type: string
-        description: Sponsorship from a trip to be updated
-        required: true
       responses:
         "204":
           description: Trip updated
