@@ -17,7 +17,8 @@ import {
   passwordNotPresent
 } from "../controllers/validators/ActorValidator.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
-import { verifyUser } from "../middlewares/AuthPermissions.js";
+import { checkAddActorPermissions, checkActorPermissions } from "../middlewares/permissions/ActorPermissions.js";
+import { verifyUser } from "../middlewares/permissions/AuthPermissions.js";
 
 export default function (app) {
   app.route("/api/v1/actors")
@@ -56,9 +57,45 @@ export default function (app) {
       updateActorPassword
     );
 
+  app.route("/api/v2/actors")
+    .get(
+      verifyUser(["ADMINISTRATOR"]),
+      getActors)
+    .post(
+      checkAddActorPermissions,
+      actorValidator,
+      passwordValidator,
+      handleExpressValidation,
+      addActor
+    );
+
   app.route("/api/v2/actors/:id")
+    .get(
+      verifyUser(["ADMINISTRATOR", "EXPLORER", "MANAGER", "SPONSOR"]),
+      checkActorPermissions,
+      findById)
     .put(
       verifyUser(["ADMINISTRATOR", "EXPLORER", "MANAGER", "SPONSOR"]),
       updateVerifiedActor
+    )
+    .delete(
+      verifyUser(["ADMINISTRATOR"]),
+      deleteActor);
+
+  app.route("/api/v2/actors/:id/ban")
+    .patch(
+      verifyUser(["ADMINISTRATOR"]),
+      banValidator,
+      handleExpressValidation,
+      banActor
+    );
+
+  app.route("/api/v2/actors/:id/update-password")
+    .patch(
+      verifyUser(["ADMINISTRATOR", "EXPLORER", "MANAGER", "SPONSOR"]),
+      checkActorPermissions,
+      passwordValidator,
+      handleExpressValidation,
+      updateActorPassword
     );
 }

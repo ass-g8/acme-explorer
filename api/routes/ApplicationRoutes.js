@@ -12,7 +12,7 @@ import {
 import { creationValidator, statusValidator, commentValidator, rejectValidator } from "../controllers/validators/ApplicationValidator.js";
 import { checkApplicationExists, checkInvalidTrip } from "../middlewares/BusinessRulesApplication.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
-import { verifyUser } from "../middlewares/AuthPermissions.js";
+import { verifyUser } from "../middlewares/permissions/AuthPermissions.js";
 
 export default function (app) {
   app.route("/api/v1/applications")

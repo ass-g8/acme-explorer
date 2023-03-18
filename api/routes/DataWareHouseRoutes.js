@@ -13,7 +13,7 @@ import {
 } from "../controllers/validators/DataWareHouseValidator.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
 import { periodDecoder } from "../middlewares/PeriodDecoder.js";
-import { verifyUser } from "../middlewares/AuthPermissions.js";
+import { verifyUser } from "../middlewares/permissions/AuthPermissions.js";
 
 export default function (app) {
   app.route("/api/v1/dashboard")

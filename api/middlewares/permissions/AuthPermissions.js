@@ -1,4 +1,4 @@
-import Actor from "../models/ActorModel.js";
+import Actor from "../../models/ActorModel.js";
 import admin from "firebase-admin";
 
 export const getUserIdToken = async (idToken) => {
@@ -16,7 +16,8 @@ export const getUserIdToken = async (idToken) => {
 export const verifyUser = (allowedRoles) => {
   return (req, res, next) => {
     const idToken = req.headers.idtoken;
-    admin.auth().verifyIdToken(idToken)
+    if (idToken) {
+      admin.auth().verifyIdToken(idToken)
       .then(function (decodedToken) {
         const uid = decodedToken.uid;
         Actor.findOne({ email: uid }, function (err, actor) {
@@ -36,5 +37,9 @@ export const verifyUser = (allowedRoles) => {
       .catch(function (err) {
         res.status(403).send({ message: "The actor has not the required roles", error: err });
       });
+    } else {
+      res.status(500).send({
+        message: res.__("UNEXPECTED_ERROR")});
+    }
   };
 };
