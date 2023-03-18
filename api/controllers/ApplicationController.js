@@ -16,7 +16,6 @@ export async function findApplicationsByExplorerId(req, res) {
 }
 
 export async function findApplicationsByTripId(req, res) {
-  // this action is only available for managers
   const { tripId } = req.params;
   try {
     const applications = await Application.find({ trip_id: tripId });
@@ -48,8 +47,6 @@ export async function findById(req, res) {
 }
 
 export async function updateApplicationStatus(req, res) {
-  // explorer can cancel application if it is pending, due or accepted
-  // manager can change de status application if it is pending to due or rejected
   const { id } = req.params;
   const { status } = req.body;
   const application = await Application.findById(id);
@@ -98,5 +95,22 @@ export async function rejectApplication(req, res) {
 }
 
 export async function payApplication(req, res) {
-  res.status(200).send({ message: "Application paid" });
+  try {
+    const application = await Application.findById(req.params.id);
+    if (application) {
+      application.status = 'ACCEPTED'
+      application.paidAt = new Date();
+      application.save()
+      res.status(200).send({ message: "Application paid" });
+    } else {
+      res.status(404).send({
+        message: res.__("SPONSORSHIP_NOT_FOUND")
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: res.__("UNEXPECTED_ERROR"),
+      err
+    });
+  }
 }

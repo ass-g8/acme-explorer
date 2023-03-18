@@ -13,7 +13,7 @@ const creationValidator = [
 const statusValidator = [
   check("status").exists({ checkNull: true, checkFalsy: true })
     .isString()
-    .isIn(["DUE", "ACCEPTED", "CANCELLED"])
+    .isIn(["DUE", "CANCELLED"])
 ];
 
 const commentValidator = [
