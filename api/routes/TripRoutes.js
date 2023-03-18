@@ -181,6 +181,12 @@ export default function (app) {
       updateTripSponsorship
     );
 
+    app.route("/api/v1/trips/:tripId/sponsorships/:sponsorshipId")
+    .patch(
+      verifyUser(["SPONSOR"]),
+      deleteTripSponsorshipLogically
+    );
+
   app.route("/api/v1/trips/:tripId/sponsorships/:sponsorshipId/pay")
     .post(
       verifyUser(["SPONSOR"]),
