@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Trip from "../models/TripModel.js";
 import { saveResultsToCache, getCachedResults } from "../services/CacheService.js";
+import Configuration from "../models/ConfigurationModel.js";
 
 export async function findById(req, res) {
   try {
@@ -95,21 +96,30 @@ const _findTrips = async (finder, explorerId) => {
 export async function findTrips(req, res) {
   const finder = _generateQuery(req.query);
   const explorerId = req.query.explorerId;
-  try {
-    const trips = req.cachedResults ?
-      await getCachedResults(explorerId) :
-      await _findTrips(finder, explorerId);
-    res.send(trips);
-  } catch (err) {
-    const trips = await _findTrips(finder, explorerId);
-    if (trips) {
+  if (explorerId) {
+    try {
+      const trips = req.cachedResults ?
+        await getCachedResults(explorerId) :
+        await _findTrips(finder, explorerId);
       res.send(trips);
-    } else {
-      res.status(500).send({
-        message: res.__("UNEXPECTED_ERROR"),
-        err
-      });
+    } catch (err) {
+      const trips = await _findTrips(finder, explorerId);
+      if (trips) {
+        res.send(trips);
+      } else {
+        res.status(500).send({
+          message: res.__("UNEXPECTED_ERROR"),
+          err
+        });
+      }
     }
+  } else {
+    const trips = await Trip.find({
+      ...finder,
+      status: "PUBLISHED"
+    });
+
+    res.send(trips);
   }
 }
 
@@ -334,6 +344,7 @@ export async function getTripSponsorshipById(req, res) {
 // Add a sponsorship to a trip
 export async function addSponsorship(req, res) {
   try {
+    const configurations = await Configuration.find({});
     const trip = await Trip.findOneAndUpdate(
       {
         _id: new mongoose.Types.ObjectId(req.params.id)
@@ -343,7 +354,7 @@ export async function addSponsorship(req, res) {
           "sponsorships": {
             // "banner": req.body.banner,
             "landingPage": req.body.landingPage,
-            "amount": req.body.amount,
+            "amount": configurations[0].sponsorshipPrice,
             "status": "PENDING",
             "sponsor_id": req.body.sponsor_id
           }
@@ -405,7 +416,7 @@ export async function updateTripSponsorship(req, res) {
 }
 
 // Update status from a sponsorship
-export async function updateTripSponsorshipStatus(req, res) {
+export async function deleteTripSponsorshipLogically(req, res) {
   try {
     // Get trip by id
     const trip = await Trip.findById(req.params.tripId);
@@ -416,7 +427,7 @@ export async function updateTripSponsorshipStatus(req, res) {
         // Get index of sponsorship
         const sponsorshipIndex = trip.sponsorships.indexOf(sponsorship)
         // Update and save sponsorship
-        sponsorship.status = req.body.status
+        sponsorship.status = "CANCELLED"
         trip.sponsorships[sponsorshipIndex] = sponsorship
         trip.save()
         res.send(trip);
@@ -439,5 +450,34 @@ export async function updateTripSponsorshipStatus(req, res) {
 }
 
 export async function paySponsorship(req, res) {
-  res.status(200).send({ message: "Sponsorship paid" });
+  try {
+    // Get trip by id
+    const trip = await Trip.findById(req.params.tripId);
+    if (trip) {
+      // Get sponsorship by id
+      const sponsorship = trip.sponsorships.filter(sponsorship => sponsorship._id.equals(new mongoose.Types.ObjectId(req.params.sponsorshipId)))[0];
+      if (sponsorship) {
+        // Get index of sponsorship
+        const sponsorshipIndex = trip.sponsorships.indexOf(sponsorship)
+        // Update and save sponsorship
+        sponsorship.status = 'ACCEPTED'
+        trip.sponsorships[sponsorshipIndex] = sponsorship
+        trip.save()
+        res.send(trip);
+      } else {
+        res.status(404).send({
+          message: res.__("SPONSORSHIP_NOT_FOUND")
+        });
+      }
+    } else {
+      res.status(404).send({
+        message: res.__("TRIP_NOT_FOUND")
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: res.__("UNEXPECTED_ERROR"),
+      err
+    });
+  }
 }

@@ -472,12 +472,39 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
-  /api/v1/trips/{tripId}/sponsorships/{sponsorshipId}/change-status:
     patch:
       tags:
         - Trips
-      description: Update status from a sponsorship
-      operationId: updateTripSponsorshipStatus
+      description: Logical remove of sponsorship
+      operationId: deleteTripSponsorshipLogically
+      parameters:
+        - required: true
+          name: tripId
+          description: _id of the trip to update
+          in: path
+          schema:
+            type: string
+        - required: true
+          name: sponsorshipId
+          description: _id of the sponsorship to delete logically
+          in: path
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Trip updated
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+  /api/v1/trips/{tripId}/sponsorships/{sponsorshipId}/pay:
+    post:
+      tags:
+        - Trips
+      description: Pay a sponsorship based on its id
+      operationId: paySponsorship
       parameters:
         - required: true
           name: tripId
@@ -488,38 +515,6 @@ paths:
         - required: true
           name: sponsorshipId
           description: _id of the sponsorship to update
-          in: path
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                status:
-                  type: string
-        description: Sponsorship from a trip to be updated
-        required: true
-      responses:
-        "204":
-          description: Trip updated
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-  /api/v1/trips/sponsorships/{id}/pay:
-    post:
-      tags:
-        - Trips
-      description: Pay a sponsorship based on its id
-      operationId: paySponsorship
-      parameters:
-        - required: true
-          name: id
-          description: id of the sponsorship
           in: path
           schema:
             type: string
