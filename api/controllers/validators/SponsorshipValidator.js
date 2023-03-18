@@ -45,12 +45,4 @@ const updateSponsorshipValidator = [
         .exists()
 ]
 
-const changeSponsorshipStatusValidator = [
-    check("status")
-        .exists({ checkNull: true, checkFalsy: true })
-        .withMessage("Status is required")
-        .isIn(['ACCEPTED', 'CANCELLED'])
-        .withMessage("Status does contain invalid value")
-]
-
-export { creationSponsorshipValidator, updateSponsorshipValidator, changeSponsorshipStatusValidator };
+export { creationSponsorshipValidator, updateSponsorshipValidator };
