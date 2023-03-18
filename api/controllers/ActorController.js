@@ -1,7 +1,7 @@
 "use strict";
 import Actor from "../models/ActorModel.js";
 import admin from "firebase-admin";
-import { getUserIdToken } from "../middlewares/AuthPermissions.js";
+import { getUserIdToken } from "../middlewares/permissions/AuthPermissions.js";
 
 export async function findById(req, res) {
   try {
@@ -169,9 +169,9 @@ export async function updateVerifiedActor(req, res) {
         res.send(err);
       } else {
         const idToken = req.headers.idtoken;
-        const role = actor.role[0];
+        const role = actor.role;
         if (role.includes("ADMINISTRATOR")) {
-          Actor.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, actor) {
+          Actor.findOneAndUpdate({ _id: req.params.id }, { name: req.body.name, surname: req.body.surname }, { new: true }, function (err, actor) {
             if (err) {
               res.send(err);
             } else {
@@ -181,7 +181,7 @@ export async function updateVerifiedActor(req, res) {
         } else if (role.includes("MANAGER") || role.includes("EXPLORER") || role.includes("SPONSOR")) {
           const authenticatedUserId = await getUserIdToken(idToken);
           if (authenticatedUserId === req.params.id) {
-            Actor.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, function (err, actor) {
+            Actor.findOneAndUpdate({ _id: req.params.id }, { name: req.body.name, surname: req.body.surname }, { new: true }, function (err, actor) {
               if (err) {
                 res.send(err);
               } else {

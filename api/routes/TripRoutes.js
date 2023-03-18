@@ -25,7 +25,7 @@ import { stageValidator } from "../controllers/validators/StageValidator.js";
 import { creationSponsorshipValidator, updateSponsorshipValidator, changeSponsorshipStatusValidator } from "../controllers/validators/SponsorshipValidator.js";
 import { getLastFinder } from "../middlewares/FinderMiddleware.js";
 import { checkTripPublished, checkCancelableTrip } from "../middlewares/BusinessRulesTrip.js";
-import { verifyUser } from "../middlewares/AuthPermissions.js";
+import { verifyUser } from "../middlewares/permissions/AuthPermissions.js";
 
 export default function (app) {
   app.route("/api/v1/trips")
