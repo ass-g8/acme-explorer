@@ -179,17 +179,21 @@ export async function updateVerifiedActor(req, res) {
             }
           });
         } else if (role.includes("MANAGER") || role.includes("EXPLORER") || role.includes("SPONSOR")) {
-          const authenticatedUserId = await getUserIdToken(idToken);
-          if (authenticatedUserId === req.params.id) {
-            Actor.findOneAndUpdate({ _id: req.params.id }, { name: req.body.name, surname: req.body.surname }, { new: true }, function (err, actor) {
-              if (err) {
-                res.send(err);
-              } else {
-                res.json(actor);
-              }
-            });
+          const authenticatedUserId = await getUserIdToken(res, idToken);
+          if (authenticatedUserId) {
+            if (authenticatedUserId === req.params.id) {
+              Actor.findOneAndUpdate({ _id: req.params.id }, { name: req.body.name, surname: req.body.surname }, { new: true }, function (err, actor) {
+                if (err) {
+                  res.send(err);
+                } else {
+                  res.json(actor);
+                }
+              });
+            } else {
+              res.status(403).send("The Actor is trying to update an Actor that is not himself!");
+            }
           } else {
-            res.status(403).send("The Actor is trying to update an Actor that is not himself!");
+            res.status(401).send("Your session has expired!");
           }
         } else {
           res.status(405).send("The Actor has unidentified roles");
