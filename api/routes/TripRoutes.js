@@ -164,4 +164,32 @@ export default function (app) {
       handleExpressValidation,
       updateTripStage
     );
+
+  app.route("/api/v2/trips/:id/sponsorships")
+    .put(
+      verifyUser(["SPONSOR"]),
+      creationSponsorshipValidator,
+      handleExpressValidation,
+      addSponsorship
+    );
+
+  app.route("/api/v2/trips/:tripId/sponsorships/:sponsorshipId")
+    .put(
+      verifyUser(["SPONSOR"]),
+      updateSponsorshipValidator,
+      handleExpressValidation,
+      updateTripSponsorship
+    );
+
+    app.route("/api/v2/trips/:tripId/sponsorships/:sponsorshipId")
+    .patch(
+      verifyUser(["SPONSOR"]),
+      deleteTripSponsorshipLogically
+    );
+
+  app.route("/api/v2/trips/:tripId/sponsorships/:sponsorshipId/pay")
+    .post(
+      verifyUser(["SPONSOR"]),
+      paySponsorship
+    );
 }
