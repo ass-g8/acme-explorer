@@ -179,7 +179,7 @@ export async function updateVerifiedActor(req, res) {
             }
           });
         } else if (role.includes("MANAGER") || role.includes("EXPLORER") || role.includes("SPONSOR")) {
-          const authenticatedUserId = await getUserIdToken(res, idToken);
+          const authenticatedUserId = await getUserIdToken(idToken);
           if (authenticatedUserId) {
             if (authenticatedUserId === req.params.id) {
               Actor.findOneAndUpdate({ _id: req.params.id }, { name: req.body.name, surname: req.body.surname }, { new: true }, function (err, actor) {

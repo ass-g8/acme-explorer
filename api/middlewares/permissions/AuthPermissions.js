@@ -1,7 +1,7 @@
 import Actor from "../../models/ActorModel.js";
 import admin from "firebase-admin";
 
-export const getUserIdToken = async (res, idToken) => {
+export const getUserIdToken = async (idToken) => {
   try {
     const actorFromFB = await admin.auth().verifyIdToken(idToken);
     const uid = actorFromFB.uid;

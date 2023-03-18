@@ -6,7 +6,7 @@ import { getUserIdToken } from "./AuthPermissions.js";
 export const checkAddActorPermissions = async (req, res, next) => {
   const idToken = req.headers.idtoken;
   if (idToken) {
-    const authenticatedUserId = await getUserIdToken(res, idToken);
+    const authenticatedUserId = await getUserIdToken(idToken);
     if (authenticatedUserId) {
       try {
         const actor = await Actor.findOne({ _id: authenticatedUserId });
@@ -34,7 +34,7 @@ export const checkAddActorPermissions = async (req, res, next) => {
 
 export const checkActorPermissions = async (req, res, next) => {
   const idToken = req.headers.idtoken;
-  const authenticatedUserId = await getUserIdToken(res, idToken);
+  const authenticatedUserId = await getUserIdToken(idToken);
   if (authenticatedUserId) {
     try {
       const actor = await Actor.findOne({ _id: authenticatedUserId });
