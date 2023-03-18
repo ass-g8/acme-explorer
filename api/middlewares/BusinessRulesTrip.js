@@ -3,12 +3,18 @@ import Application from "../models/ApplicationModel.js";
 
 export const checkTripPublished = async (req, res, next) => {
     const trip = await Trip.findById(req.params.id);
-    if (trip.status === "PUBLISHED") {
-        res.status(400).send({
-            message: res.__("PUBLISHED_TRIP")
-        });
+    if (trip) {
+        if (trip.status === "PUBLISHED") {
+            res.status(400).send({
+                message: res.__("PUBLISHED_TRIP")
+            });
+        } else {
+            next();
+        }
     } else {
-        next();
+        res.status(404).send({
+            message: res.__("TRIP_NOT_FOUND")
+        });
     }
 };
 
