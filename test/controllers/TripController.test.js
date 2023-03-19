@@ -144,7 +144,7 @@ describe("Trip Controller test", () => {
             });
     });
 
-    it("POST /trip with 500 error", (done) => {
+    it("POST trip with 500 error", (done) => {
         const trip = {
             title: 'Title',
             description: 'Description',
@@ -170,7 +170,7 @@ describe("Trip Controller test", () => {
             });
     });
 
-    it("PUT /trip", (done) => {
+    it("PUT trip", (done) => {
         const trip = {
             title: "string"
         }
@@ -188,7 +188,7 @@ describe("Trip Controller test", () => {
             });
     });
 
-    it("PUT /trip with 404 error", (done) => {
+    it("PUT trip with 404 error", (done) => {
         const trip = {
             title: "string"
         }
@@ -206,7 +206,7 @@ describe("Trip Controller test", () => {
             });
     });
 
-    it("PUT /trip with 500 error", (done) => {
+    it("PUT trip with 500 error", (done) => {
         const trip = {
             title: "string"
         }
@@ -224,7 +224,7 @@ describe("Trip Controller test", () => {
             });
     });
 
-    it("GET /trips by manager ID", (done) => {
+    it("GET all trips by manager ID", (done) => {
         const stub = sinon.stub(Trip, "find").returns(Promise.resolve([{ trips: [publishedTrip, draftTrip] }]));
         chai.request(app)
             .get("/api/v1/trips/manager/" + publishedTrip.manager_id.toString())
@@ -236,7 +236,7 @@ describe("Trip Controller test", () => {
             });
     });
 
-    it("GET /trips by manager ID with 500 error", (done) => {
+    it("GET all trips by manager ID with 500 error", (done) => {
         const stub = sinon.stub(Trip, "find").throws();
         chai.request(app)
             .get("/api/v1/trips/manager/" + publishedTrip.manager_id.toString())
@@ -248,7 +248,7 @@ describe("Trip Controller test", () => {
             });
     });
 
-    it("PUT /trips/stages create a stage ", (done) => {
+    it("PUT create a stage trip", (done) => {
         const stage = {
             title: "title",
             description: "description",
@@ -268,7 +268,7 @@ describe("Trip Controller test", () => {
             });
     });
 
-    it("PUT /trips/sponsorships update a sponsorship ", (done) => {
+    it("PUT update a sponsorship trip", (done) => {
         const sponsorship = {
             landingPage: "www.google.com"
         }

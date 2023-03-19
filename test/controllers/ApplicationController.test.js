@@ -83,6 +83,18 @@ describe("Application Controller test", () => {
       });
   });
 
+  it("POST pay an application", (done) => {
+    const stub = sinon.stub(Application, "findById").returns(Promise.resolve(application));
+    chai.request(app)
+      .post("/api/v1/applications/641446af75a2718e86b235cc/pay")
+      .end((_err, res) => {
+        expect(stub.calledOnce).to.be.true;
+        expect(res).to.have.status(200);
+        expect("Content-Type", /json/);
+        done();
+      });
+  });
+
   afterEach(() => {
     sinon.reset();
     sinon.restore();
