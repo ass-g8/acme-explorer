@@ -352,7 +352,7 @@ export async function addSponsorship(req, res) {
       {
         $push: {
           "sponsorships": {
-            // "banner": req.body.banner,
+            "banner": req.body.banner,
             "landingPage": req.body.landingPage,
             "amount": configurations[0].sponsorshipPrice,
             "status": "PENDING",
@@ -392,8 +392,12 @@ export async function updateTripSponsorship(req, res) {
         // Get index of sponsorship
         const sponsorshipIndex = trip.sponsorships.indexOf(sponsorship)
         // Update and save sponsorship
-        // sponsorship.banner = req.body.banner
-        sponsorship.landingPage = req.body.landingPage
+        if (req.body.banner) {
+          sponsorship.banner = req.body.banner
+        }
+        if (req.body.landingPage) {
+          sponsorship.landingPage = req.body.landingPage
+        }
         trip.sponsorships[sponsorshipIndex] = sponsorship
         trip.save()
         res.send(trip);

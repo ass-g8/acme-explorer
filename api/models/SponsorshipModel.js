@@ -3,8 +3,11 @@ import mongoose from "mongoose";
 
 const sponsorshipSchema = new mongoose.Schema({
   banner: {
-    data: Buffer,
-    contentType: String
+    type: {
+      data: Buffer,
+      contentType: String
+    },
+    required: "Sponsorship banner is required"
   },
   landingPage: {
     type: String,
