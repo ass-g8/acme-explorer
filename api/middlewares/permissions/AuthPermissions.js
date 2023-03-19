@@ -2,14 +2,18 @@ import Actor from "../../models/ActorModel.js";
 import admin from "firebase-admin";
 
 export const getUserIdToken = async (idToken) => {
-  const actorFromFB = await admin.auth().verifyIdToken(idToken);
-  const uid = actorFromFB.uid;
-  const actor = await Actor.findOne({ email: uid });
-  if (!actor) {
-    return null;
-  } else {
-    const id = actor._id;
-    return id;
+  try {
+    const actorFromFB = await admin.auth().verifyIdToken(idToken);
+    const uid = actorFromFB.uid;
+    const actor = await Actor.findOne({ email: uid });
+    if (!actor) {
+      return null;
+    } else {
+      const id = actor._id;
+      return id;
+    }
+  } catch (err) {
+    return false;
   }
 };
 
@@ -38,7 +42,7 @@ export const verifyUser = (allowedRoles) => {
           res.status(403).send({ message: "The actor has not the required roles", error: err });
         });
     } else {
-      res.status(401).send({ message: "Token not provided." });
+      res.status(401).send({ message: "An error has occurred. You are probably not registered in the system."});
     }
   };
 };
