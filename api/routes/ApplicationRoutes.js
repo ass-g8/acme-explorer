@@ -13,6 +13,7 @@ import { creationValidator, statusValidator, commentValidator, rejectValidator }
 import { checkApplicationExists, checkInvalidTrip } from "../middlewares/BusinessRulesApplication.js";
 import handleExpressValidation from "../middlewares/ValidationHandlingMiddleware.js";
 import { verifyUser } from "../middlewares/permissions/AuthPermissions.js";
+import { checkUpdateStatusPermissions } from "../middlewares/permissions/ApplicationPermissions.js"
 
 export default function (app) {
   app.route("/api/v1/applications")
@@ -78,6 +79,7 @@ export default function (app) {
       verifyUser(["MANAGER", "EXPLORER"]),
       statusValidator,
       handleExpressValidation,
+      checkUpdateStatusPermissions,
       updateApplicationStatus
     );
 
@@ -95,6 +97,12 @@ export default function (app) {
       rejectValidator,
       handleExpressValidation,
       rejectApplication
+    );
+
+  app.route("/api/v2/applications/:id/pay")
+    .post(
+      verifyUser(["EXPLORER"]),
+      payApplication
     );
 
   app.route("/api/v2/applications/explorer/:explorerId")
