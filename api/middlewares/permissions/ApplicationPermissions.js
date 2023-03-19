@@ -5,14 +5,13 @@ import { getUserIdToken } from "./AuthPermissions.js";
 
 export const checkUpdateStatusPermissions = async (req, res, next) => {
   // explorer can cancel application if it is pending, due or accepted
-  // manager can change de status application if it is pending to due or rejected (have their own endpoint)
+  // manager can change the status application if it is pending to due or rejected (have their own endpoint)
   const idToken = req.headers.idtoken;
   const authenticatedUserId = await getUserIdToken(idToken);
   if (authenticatedUserId) {
     try {
       const actor = await Actor.findOne({ _id: authenticatedUserId });
       const role = actor.role;
-      console.log(role)
       const application = await Application.findById(req.params.id);
       if (role.includes("MANAGER") && application.status === "PENDING") {
         req.body.status = "DUE";

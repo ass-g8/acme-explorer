@@ -216,8 +216,6 @@ export async function addStage(req, res) {
 
     await trip.save();
 
-    console.log(trip);
-
     if (trip) {
       res.send(trip);
     } else {
