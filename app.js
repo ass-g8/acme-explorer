@@ -32,11 +32,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(i18nConfiguration);
 app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, idToken') // ojo, que si metemos un parametro propio por la cabecera hay que declararlo aquí para que no de el error CORS
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS')
-  next()
-})
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, idToken");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,PATCH,OPTIONS");
+  next();
+});
 
 actorRoutes(app);
 applicationRoutes(app);
@@ -45,14 +45,22 @@ dataWareHouseRoutes(app);
 tripRoutes(app);
 swagger(app);
 
-initMongoDBConnection()
-  .then(() => {
-    app.listen(port, function () {
-      console.log("ACME-Explorer RESTful API server started on: " + port);
+if (process.env.NODE_ENV !== "testing") {
+  initMongoDBConnection()
+    .then(() => {
+      app.listen(port, function () {
+        console.log("ACME-Explorer RESTful API server started on: " + port);
+      });
+    })
+    .catch((err) => {
+      console.error("ACME-Explorer RESTful API could not connect to DB " + err);
     });
-  })
-  .catch((err) => {
-    console.error("ACME-Explorer RESTful API could not connect to DB " + err);
-  });
 
-initializeDataWarehouseJob();
+  initializeDataWarehouseJob();
+} else {
+  app.listen(port, function () {
+    console.log("ACME-Explorer RESTful API server started on: " + port);
+  });
+}
+
+export default app;

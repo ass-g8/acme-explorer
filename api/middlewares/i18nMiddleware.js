@@ -2,9 +2,15 @@
 import Configuration from "../models/ConfigurationModel.js";
 
 const i18nConfiguration = async (req, res, next) => {
-  const config = await Configuration.find().limit(1);
-  const lang = config[0].defaultLanguage;
-  res.setLocale(lang);
+  if (process.env.NODE_ENV !== "testing") {
+    const config = await Configuration.find().limit(1);
+    if (config[0]) {
+      const lang = config[0].defaultLanguage;
+      res.setLocale(lang);
+    } else {
+      res.setLocale("en");
+    }
+  }
   next();
 };
 
