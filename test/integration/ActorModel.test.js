@@ -48,7 +48,19 @@ describe("Testing Actor Model", () => {
     });
 
     const newActor = await actor.save();
+    const actorRead = await Actor.find({ email: "mrf1989@hotmail.com" });
     assert.exists(newActor);
+    assert.exists(actorRead);
+  });
+
+  it("should update an actor", async () => {
+    const actorUpdated = await Actor.findOneAndUpdate({ email: "mrf1989@hotmail.com" }, {
+      phone: "777666888",
+      address: "helm street"
+    }, { new: true });
+
+    assert.equal(actorUpdated.phone, "777666888");
+    assert.equal(actorUpdated.address, "helm street");
   });
 
   after(async () => {

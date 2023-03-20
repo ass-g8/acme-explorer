@@ -49,7 +49,7 @@ const actorUpdated = {
 };
 
 describe("Actor Controller test", () => {
-  it("POST /actor", (done) => {
+  it("POST actor", (done) => {
     const stubFindOne = sinon.stub(Actor, "findOne").returns(Promise.resolve(undefined));
     const stubSave = sinon.stub(Actor.prototype, "save").returns(Promise.resolve(JSON.stringify(actorOK)));
     chai.request(app)
@@ -64,7 +64,7 @@ describe("Actor Controller test", () => {
       });
   });
 
-  it("POST /actor with 422 error by not valid password", (done) => {
+  it("POST actor with 422 error by not valid password", (done) => {
     const stubFindOne = sinon.stub(Actor, "findOne").returns(Promise.resolve(undefined));
     chai.request(app)
       .post("/api/v1/actors")
@@ -77,7 +77,7 @@ describe("Actor Controller test", () => {
       });
   });
 
-  it("GET /actor", (done) => {
+  it("GET all actors", (done) => {
     const stub = sinon.stub(Actor, "find").returns(Promise.resolve([{ users: [] }]));
     chai.request(app)
       .get("/api/v1/actors")
@@ -89,7 +89,7 @@ describe("Actor Controller test", () => {
       });
   });
 
-  it("GET /actor by id", (done) => {
+  it("GET actor by id", (done) => {
     const stub = sinon.stub(Actor, "findById").returns(Promise.resolve(actorInDB));
     chai.request(app)
       .get("/api/v1/actors/641446af75a2718e86b23500")
@@ -101,7 +101,7 @@ describe("Actor Controller test", () => {
       });
   });
 
-  it("GET /actor with 404 error", (done) => {
+  it("GET actor with 404 error", (done) => {
     const stub = sinon.stub(Actor, "findById").returns(Promise.resolve(undefined));
     chai.request(app)
       .get("/api/v1/actors/641446af75a2718e86b235c3")
@@ -112,7 +112,7 @@ describe("Actor Controller test", () => {
       });
   });
 
-  it("PUT /actor", (done) => {
+  it("PUT actor", (done) => {
     const stubFindOne = sinon.stub(Actor, "findOne").returns(Promise.resolve(undefined));
     const stub = sinon.stub(Actor, "findOneAndUpdate").returns(Promise.resolve(new Actor({
       ...actorToUpdate,
